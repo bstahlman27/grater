@@ -1,0 +1,126 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Visibility {
+  PRIVATE
+  FRIENDS
+}
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+  BLOCKED
+}
+
+model Profile {
+  id          String   @id @default(uuid()) @db.Uuid
+  authUserId  String?  @unique @db.Uuid
+  email       String?  @unique
+  username    String   @unique
+  displayName String?
+  avatarUrl   String?
+  bio         String?  @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  reviews                Review[]
+  playLaterItems         PlayLaterItem[]
+  installedGameItems     InstalledGameItem[]
+  friendshipsAsUserA     Friendship[]        @relation("FriendshipUserA")
+  friendshipsAsUserB     Friendship[]        @relation("FriendshipUserB")
+  friendshipRequestsSent Friendship[]        @relation("FriendshipRequester")
+}
+
+model Game {
+  id              String    @id @default(uuid()) @db.Uuid
+  rawgId          Int       @unique
+  slug            String    @unique
+  title           String
+  releasedAt      DateTime?
+  backgroundUrl   String?
+  coverUrl        String?
+  summary         String?   @db.Text
+  metacritic      Int?
+  rawgRating      Float?
+  rawgLastSyncedAt DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  reviews            Review[]
+  playLaterItems     PlayLaterItem[]
+  installedGameItems InstalledGameItem[]
+}
+
+model Review {
+  id               String     @id @default(uuid()) @db.Uuid
+  profileId        String     @db.Uuid
+  gameId           String     @db.Uuid
+  /// Store 1-10 so the UI can support half-stars later.
+  rating           Int
+  body             String?    @db.Text
+  containsSpoilers Boolean    @default(false)
+  visibility       Visibility @default(FRIENDS)
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+
+  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  game    Game    @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@unique([profileId, gameId])
+  @@index([gameId])
+}
+
+model PlayLaterItem {
+  id         String     @id @default(uuid()) @db.Uuid
+  profileId  String     @db.Uuid
+  gameId     String     @db.Uuid
+  visibility Visibility @default(PRIVATE)
+  note       String?    @db.Text
+  createdAt  DateTime   @default(now())
+
+  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  game    Game    @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@unique([profileId, gameId])
+  @@index([gameId])
+}
+
+model InstalledGameItem {
+  id         String     @id @default(uuid()) @db.Uuid
+  profileId  String     @db.Uuid
+  gameId     String     @db.Uuid
+  visibility Visibility @default(FRIENDS)
+  platform   String?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  game    Game    @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@unique([profileId, gameId])
+  @@index([gameId])
+}
+
+model Friendship {
+  id            String           @id @default(uuid()) @db.Uuid
+  userAId       String           @db.Uuid
+  userBId       String           @db.Uuid
+  requestedById String           @db.Uuid
+  status        FriendshipStatus @default(PENDING)
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  userA       Profile @relation("FriendshipUserA", fields: [userAId], references: [id], onDelete: Cascade)
+  userB       Profile @relation("FriendshipUserB", fields: [userBId], references: [id], onDelete: Cascade)
+  requestedBy Profile @relation("FriendshipRequester", fields: [requestedById], references: [id], onDelete: Cascade)
+
+  @@unique([userAId, userBId])
+  @@index([requestedById])
+  @@index([status])
+}
