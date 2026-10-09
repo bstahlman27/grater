@@ -42,29 +42,29 @@ function RawgResultCard({ game }: { game: RawgSearchGame }) {
     <form action={cacheRawgGameAction}>
       <input name="rawgId" type="hidden" value={game.rawgId} />
       <button
-        className="group grid w-full cursor-pointer gap-4 rounded-lg border border-zinc-300 bg-white p-4 text-left shadow-sm transition hover:border-zinc-500 sm:grid-cols-[8rem_1fr]"
+        className="group block w-full cursor-pointer overflow-hidden rounded-lg border border-zinc-300 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:border-zinc-500 hover:shadow-lg"
         type="submit"
       >
-        <span className="relative aspect-video overflow-hidden rounded-md bg-zinc-200">
+        <span className="relative block aspect-video overflow-hidden bg-zinc-800">
           {game.backgroundUrl ? (
             <Image
               alt=""
               className="h-full w-full object-cover"
               fill
-              sizes="(max-width: 768px) 100vw, 8rem"
+              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 33vw, 24rem"
               src={game.backgroundUrl}
             />
           ) : (
-            <span className="flex h-full items-end bg-zinc-700 p-3 text-xs font-semibold uppercase text-white">
+            <span className="flex h-full items-end bg-zinc-700 p-4 text-xs font-semibold uppercase text-white">
               {game.releaseYear}
             </span>
           )}
         </span>
 
-        <span className="flex flex-col gap-4">
+        <span className="flex min-h-36 flex-col gap-4 p-4">
           <span>
             <span className="flex flex-wrap items-center gap-2">
-              <span className="text-lg font-semibold group-hover:text-red-700">
+              <span className="line-clamp-2 text-xl font-semibold leading-6 text-zinc-950 group-hover:text-red-700">
                 {game.title}
               </span>
               <span className="rounded-md bg-zinc-100 px-2 py-1 text-xs font-medium text-zinc-600">
@@ -79,7 +79,7 @@ function RawgResultCard({ game }: { game: RawgSearchGame }) {
             </span>
           </span>
 
-          <span className="mt-auto w-fit rounded-lg bg-zinc-950 px-4 py-2 text-sm font-semibold text-white group-hover:bg-zinc-800">
+          <span className="mt-auto w-fit rounded-md bg-zinc-950 px-3 py-1 text-sm font-semibold text-white group-hover:bg-red-700">
             Save to Grater
           </span>
         </span>
@@ -184,7 +184,7 @@ export default async function GamesPage({ searchParams }: GamesPageProps) {
                 </p>
               ) : null}
 
-              <div className="grid gap-4 md:grid-cols-2">
+              <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
                 {rawgResults.map((game) => (
                   <RawgResultCard game={game} key={game.rawgId} />
                 ))}
@@ -213,7 +213,7 @@ export default async function GamesPage({ searchParams }: GamesPageProps) {
               <h3 className="text-xl font-semibold">Saved in Grater</h3>
             </div>
 
-            <div className="grid gap-4 md:grid-cols-2">
+            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
               {cachedGames.map((game) => (
                 <GameCard game={game} key={game.slug} />
               ))}
