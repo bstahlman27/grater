@@ -17,7 +17,9 @@ export type ReviewSummary = {
   id: string;
   rating: number;
   body: string;
+  containsSpoilers: boolean;
   updatedAt: string;
+  visibility: "private" | "friends";
 };
 
 export type ReviewedGame = {

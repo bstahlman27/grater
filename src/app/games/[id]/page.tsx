@@ -4,7 +4,11 @@ import { notFound } from "next/navigation";
 import { AppHeader } from "@/components/app-header";
 import { StarRating } from "@/components/star-rating";
 import { getGamePageData } from "@/data/grater";
-import { toggleInstalledAction, togglePlayLaterAction } from "../actions";
+import {
+  saveReviewAction,
+  toggleInstalledAction,
+  togglePlayLaterAction,
+} from "../actions";
 
 export const dynamic = "force-dynamic";
 
@@ -27,15 +31,15 @@ export default async function GameDetailPage({
       <div className="mx-auto w-full max-w-6xl px-6 py-6 sm:px-8 lg:px-10">
         <AppHeader />
 
-        <section className="grid gap-8 py-10">
-          <div className="relative aspect-video overflow-hidden rounded-lg bg-zinc-200 shadow-sm">
+        <section className="grid gap-8 py-10 xl:grid-cols-[minmax(0,42rem)_1fr] xl:items-start">
+          <div className="relative aspect-video max-w-3xl overflow-hidden rounded-lg bg-zinc-200 shadow-sm xl:max-w-none">
             {game.coverUrl ? (
               <Image
                 alt=""
                 className="h-full w-full object-cover"
                 fill
                 priority
-                sizes="(max-width: 1152px) 100vw, 72rem"
+                sizes="(max-width: 1280px) 100vw, 42rem"
                 src={game.coverUrl}
               />
             ) : (
@@ -155,11 +159,116 @@ export default async function GameDetailPage({
                 </div>
                 {review ? <StarRating rating={review.rating} /> : null}
               </div>
-              <p className="mt-4 leading-7 text-zinc-700">
-                {review
-                  ? review.body
-                  : "The real review form will live here once auth and database storage are connected."}
-              </p>
+
+              {review?.body ? (
+                <p className="mt-4 leading-7 text-zinc-700">{review.body}</p>
+              ) : null}
+
+              {review ? (
+                <div className="mt-4 flex flex-wrap gap-2 text-sm text-zinc-600">
+                  <span className="rounded-md bg-zinc-100 px-2 py-1">
+                    {review.visibility}
+                  </span>
+                  {review.containsSpoilers ? (
+                    <span className="rounded-md bg-red-50 px-2 py-1 text-red-800">
+                      spoilers
+                    </span>
+                  ) : null}
+                  <span className="rounded-md bg-zinc-100 px-2 py-1">
+                    Updated {review.updatedAt}
+                  </span>
+                </div>
+              ) : null}
+
+              {isSignedIn ? (
+                <form action={saveReviewAction} className="mt-6 space-y-4">
+                  <input name="slug" type="hidden" value={game.slug} />
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div>
+                      <label
+                        className="block text-sm font-medium text-zinc-700"
+                        htmlFor="rating"
+                      >
+                        Rating
+                      </label>
+                      <select
+                        className="mt-2 min-h-11 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm outline-none ring-red-700/20 focus:border-red-700 focus:ring-4"
+                        defaultValue={review?.rating ?? 5}
+                        id="rating"
+                        name="rating"
+                      >
+                        <option value="5">5 stars</option>
+                        <option value="4">4 stars</option>
+                        <option value="3">3 stars</option>
+                        <option value="2">2 stars</option>
+                        <option value="1">1 star</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label
+                        className="block text-sm font-medium text-zinc-700"
+                        htmlFor="visibility"
+                      >
+                        Visibility
+                      </label>
+                      <select
+                        className="mt-2 min-h-11 w-full rounded-md border border-zinc-300 bg-white px-3 text-sm outline-none ring-red-700/20 focus:border-red-700 focus:ring-4"
+                        defaultValue={review?.visibility ?? "friends"}
+                        id="visibility"
+                        name="visibility"
+                      >
+                        <option value="friends">Friends</option>
+                        <option value="private">Private</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label
+                      className="block text-sm font-medium text-zinc-700"
+                      htmlFor="body"
+                    >
+                      Notes
+                    </label>
+                    <textarea
+                      className="mt-2 min-h-32 w-full rounded-md border border-zinc-300 bg-white px-3 py-3 text-sm leading-6 outline-none ring-red-700/20 focus:border-red-700 focus:ring-4"
+                      defaultValue={review?.body ?? ""}
+                      id="body"
+                      name="body"
+                    />
+                  </div>
+
+                  <label className="flex items-center gap-2 text-sm text-zinc-700">
+                    <input
+                      className="size-4 accent-red-700"
+                      defaultChecked={review?.containsSpoilers ?? false}
+                      name="containsSpoilers"
+                      type="checkbox"
+                    />
+                    Contains spoilers
+                  </label>
+
+                  <button
+                    className="rounded-md bg-zinc-950 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-700"
+                    type="submit"
+                  >
+                    {review ? "Update review" : "Save review"}
+                  </button>
+                </form>
+              ) : (
+                <div className="mt-6 rounded-md border border-zinc-200 p-4">
+                  <p className="text-sm text-zinc-700">
+                    Log in to rate and review this game.
+                  </p>
+                  <Link
+                    className="mt-4 inline-flex rounded-md bg-zinc-950 px-4 py-2 text-sm font-semibold text-white hover:bg-zinc-800"
+                    href="/login"
+                  >
+                    Log in
+                  </Link>
+                </div>
+              )}
             </section>
           </div>
         </section>

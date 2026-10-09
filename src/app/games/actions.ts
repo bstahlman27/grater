@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import {
   cacheRawgGame,
+  saveReviewForGame,
   toggleInstalledGame,
   togglePlayLaterGame,
 } from "@/data/grater";
@@ -49,5 +50,27 @@ export async function toggleInstalledAction(formData: FormData) {
   const slug = getGameSlug(formData);
 
   await toggleInstalledGame(slug);
+  revalidateGameLists(slug);
+}
+
+export async function saveReviewAction(formData: FormData) {
+  const slug = getGameSlug(formData);
+  const rating = Number(formData.get("rating"));
+  const rawBody = formData.get("body");
+  const rawVisibility = formData.get("visibility");
+
+  if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
+    throw new Error("Rating must be between 1 and 5 stars.");
+  }
+
+  const body = typeof rawBody === "string" ? rawBody.trim() : "";
+  const visibility = rawVisibility === "private" ? "private" : "friends";
+
+  await saveReviewForGame(slug, {
+    body: body || null,
+    containsSpoilers: formData.get("containsSpoilers") === "on",
+    rating,
+    visibility,
+  });
   revalidateGameLists(slug);
 }

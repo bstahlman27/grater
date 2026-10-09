@@ -39,7 +39,16 @@ type ReviewRecord = {
   id: string;
   rating: number;
   body: string | null;
+  containsSpoilers: boolean;
   updatedAt: Date;
+  visibility: Visibility;
+};
+
+export type SaveReviewInput = {
+  body: string | null;
+  containsSpoilers: boolean;
+  rating: number;
+  visibility: ListedGame["visibility"];
 };
 
 function formatDate(date: Date | null) {
@@ -91,7 +100,9 @@ function toReviewSummary(review: ReviewRecord): ReviewSummary {
     id: review.id,
     rating: review.rating / 2,
     body: review.body ?? "",
+    containsSpoilers: review.containsSpoilers,
     updatedAt: formatDate(review.updatedAt),
+    visibility: toVisibilityLabel(review.visibility),
   };
 }
 
@@ -463,6 +474,51 @@ export async function toggleInstalledGame(slug: string) {
       gameId: game.id,
       visibility: Visibility.FRIENDS,
       platform: "PC",
+    },
+  });
+}
+
+export async function saveReviewForGame(slug: string, input: SaveReviewInput) {
+  const [profile, game] = await Promise.all([
+    requireSignedInProfile(),
+    prisma.game.findUnique({
+      where: {
+        slug,
+      },
+      select: {
+        id: true,
+      },
+    }),
+  ]);
+
+  if (!game) {
+    throw new Error(`Game not found: ${slug}`);
+  }
+
+  const rating = input.rating * 2;
+
+  await prisma.review.upsert({
+    where: {
+      profileId_gameId: {
+        profileId: profile.id,
+        gameId: game.id,
+      },
+    },
+    update: {
+      body: input.body,
+      containsSpoilers: input.containsSpoilers,
+      rating,
+      visibility:
+        input.visibility === "friends" ? Visibility.FRIENDS : Visibility.PRIVATE,
+    },
+    create: {
+      profileId: profile.id,
+      gameId: game.id,
+      body: input.body,
+      containsSpoilers: input.containsSpoilers,
+      rating,
+      visibility:
+        input.visibility === "friends" ? Visibility.FRIENDS : Visibility.PRIVATE,
     },
   });
 }
