@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AppHeader } from "@/components/app-header";
@@ -27,10 +28,23 @@ export default async function GameDetailPage({
         <AppHeader />
 
         <section className="grid gap-8 py-10 lg:grid-cols-[18rem_1fr]">
-          <div
-            className={`flex aspect-[3/4] items-end rounded-lg ${game.coverColor} p-5 text-lg font-semibold uppercase text-white shadow-sm`}
-          >
-            {game.releaseYear}
+          <div className="relative aspect-[3/4] overflow-hidden rounded-lg bg-zinc-200 shadow-sm">
+            {game.coverUrl ? (
+              <Image
+                alt=""
+                className="h-full w-full object-cover"
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 18rem"
+                src={game.coverUrl}
+              />
+            ) : (
+              <div
+                className={`flex h-full items-end ${game.coverColor} p-5 text-lg font-semibold uppercase text-white`}
+              >
+                {game.releaseYear}
+              </div>
+            )}
           </div>
 
           <div>

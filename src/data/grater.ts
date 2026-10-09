@@ -26,6 +26,8 @@ type GameRecord = {
   title: string;
   releasedAt: Date | null;
   summary: string | null;
+  backgroundUrl: string | null;
+  coverUrl: string | null;
 };
 
 type GameDetailRecord = GameRecord & {
@@ -71,6 +73,7 @@ function toGameSummary(game: GameRecord): GameSummary {
     releaseYear: getReleaseYear(game.releasedAt),
     summary: game.summary ?? "No summary cached yet.",
     coverColor: getCoverColor(game.slug),
+    coverUrl: game.coverUrl ?? game.backgroundUrl,
   };
 }
 

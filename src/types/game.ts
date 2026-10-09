@@ -4,6 +4,7 @@ export type GameSummary = {
   releaseYear: string;
   summary: string;
   coverColor: string;
+  coverUrl: string | null;
 };
 
 export type GameDetail = GameSummary & {
