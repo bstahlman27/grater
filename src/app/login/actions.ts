@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { ensureProfileForUser } from "@/lib/auth";
+import { getSiteUrl } from "@/lib/site-url";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
@@ -28,7 +29,7 @@ function getCredentials(formData: FormData) {
 async function getOrigin() {
   const headerStore = await headers();
 
-  return headerStore.get("origin") ?? "http://localhost:3000";
+  return getSiteUrl(headerStore);
 }
 
 export async function loginAction(formData: FormData) {
