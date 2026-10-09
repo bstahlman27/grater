@@ -16,7 +16,7 @@ export function GameCard({ game }: GameCardProps) {
         {game.coverUrl ? (
           <Image
             alt=""
-            className="h-full w-full object-cover"
+            className="h-full w-full object-contain"
             fill
             sizes="5rem"
             src={game.coverUrl}

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { AppHeader } from "@/components/app-header";
 import { GameCard } from "@/components/game-card";
 import { getAllGames } from "@/data/grater";
@@ -9,9 +10,14 @@ export const dynamic = "force-dynamic";
 
 type GamesPageProps = {
   searchParams: Promise<{
+    limit?: string | string[];
     q?: string | string[];
   }>;
 };
+
+const DEFAULT_RESULT_LIMIT = 8;
+const RESULT_LIMIT_STEP = 8;
+const MAX_RESULT_LIMIT = 40;
 
 function getQuery(value: string | string[] | undefined) {
   if (Array.isArray(value)) {
@@ -21,62 +27,89 @@ function getQuery(value: string | string[] | undefined) {
   return value ?? "";
 }
 
+function getResultLimit(value: string | string[] | undefined) {
+  const limit = Number(getQuery(value));
+
+  if (!Number.isInteger(limit)) {
+    return DEFAULT_RESULT_LIMIT;
+  }
+
+  return Math.min(Math.max(limit, DEFAULT_RESULT_LIMIT), MAX_RESULT_LIMIT);
+}
+
 function RawgResultCard({ game }: { game: RawgSearchGame }) {
   return (
-    <article className="grid gap-4 rounded-lg border border-zinc-300 bg-white p-4 shadow-sm sm:grid-cols-[8rem_1fr]">
-      <div className="relative aspect-[16/10] overflow-hidden rounded-md bg-zinc-200 sm:aspect-[3/4]">
-        {game.backgroundUrl ? (
-          <Image
-            alt=""
-            className="h-full w-full object-cover"
-            fill
-            sizes="(max-width: 768px) 100vw, 8rem"
-            src={game.backgroundUrl}
-          />
-        ) : (
-          <div className="flex h-full items-end bg-zinc-700 p-3 text-xs font-semibold uppercase text-white">
-            {game.releaseYear}
-          </div>
-        )}
-      </div>
-
-      <div className="flex flex-col gap-4">
-        <div>
-          <div className="flex flex-wrap items-center gap-2">
-            <h3 className="text-lg font-semibold">{game.title}</h3>
-            <span className="rounded-md bg-zinc-100 px-2 py-1 text-xs font-medium text-zinc-600">
+    <form action={cacheRawgGameAction}>
+      <input name="rawgId" type="hidden" value={game.rawgId} />
+      <button
+        className="group grid w-full cursor-pointer gap-4 rounded-lg border border-zinc-300 bg-white p-4 text-left shadow-sm transition hover:border-zinc-500 sm:grid-cols-[8rem_1fr]"
+        type="submit"
+      >
+        <span className="relative aspect-[16/10] overflow-hidden rounded-md bg-zinc-200 sm:aspect-[3/4]">
+          {game.backgroundUrl ? (
+            <Image
+              alt=""
+              className="h-full w-full object-contain"
+              fill
+              sizes="(max-width: 768px) 100vw, 8rem"
+              src={game.backgroundUrl}
+            />
+          ) : (
+            <span className="flex h-full items-end bg-zinc-700 p-3 text-xs font-semibold uppercase text-white">
               {game.releaseYear}
             </span>
-          </div>
-          <p className="mt-2 text-sm text-zinc-600">
-            {game.metacritic ? `Metacritic ${game.metacritic}` : "No Metacritic score"}
-            {game.rawgRating ? ` · RAWG ${game.rawgRating.toFixed(1)}` : ""}
-          </p>
-        </div>
+          )}
+        </span>
 
-        <form action={cacheRawgGameAction} className="mt-auto">
-          <input name="rawgId" type="hidden" value={game.rawgId} />
-          <button
-            className="rounded-lg bg-zinc-950 px-4 py-2 text-sm font-semibold text-white hover:bg-zinc-800"
-            type="submit"
-          >
+        <span className="flex flex-col gap-4">
+          <span>
+            <span className="flex flex-wrap items-center gap-2">
+              <span className="text-lg font-semibold group-hover:text-red-700">
+                {game.title}
+              </span>
+              <span className="rounded-md bg-zinc-100 px-2 py-1 text-xs font-medium text-zinc-600">
+                {game.releaseYear}
+              </span>
+            </span>
+            <span className="mt-2 block text-sm text-zinc-600">
+              {game.metacritic
+                ? `Metacritic ${game.metacritic}`
+                : "No Metacritic score"}
+              {game.rawgRating ? ` - RAWG ${game.rawgRating.toFixed(1)}` : ""}
+            </span>
+          </span>
+
+          <span className="mt-auto w-fit rounded-lg bg-zinc-950 px-4 py-2 text-sm font-semibold text-white group-hover:bg-zinc-800">
             Save to Grater
-          </button>
-        </form>
-      </div>
-    </article>
+          </span>
+        </span>
+      </button>
+    </form>
   );
 }
 
+function getShowMoreHref(query: string, limit: number) {
+  const params = new URLSearchParams({
+    q: query,
+    limit: String(Math.min(limit + RESULT_LIMIT_STEP, MAX_RESULT_LIMIT)),
+  });
+
+  return `/games?${params.toString()}`;
+}
+
 export default async function GamesPage({ searchParams }: GamesPageProps) {
-  const [{ q }, cachedGames] = await Promise.all([searchParams, getAllGames()]);
+  const [{ limit, q }, cachedGames] = await Promise.all([
+    searchParams,
+    getAllGames(),
+  ]);
   const query = getQuery(q).trim();
+  const resultLimit = getResultLimit(limit);
   let rawgResults: RawgSearchGame[] = [];
   let rawgError: string | null = null;
 
   if (query) {
     try {
-      rawgResults = await searchRawgGames(query);
+      rawgResults = await searchRawgGames(query, resultLimit);
     } catch (error) {
       rawgError =
         error instanceof Error ? error.message : "RAWG search failed unexpectedly.";
@@ -156,6 +189,19 @@ export default async function GamesPage({ searchParams }: GamesPageProps) {
                   <RawgResultCard game={game} key={game.rawgId} />
                 ))}
               </div>
+
+              {!rawgError &&
+              rawgResults.length >= resultLimit &&
+              resultLimit < MAX_RESULT_LIMIT ? (
+                <div className="flex justify-center pt-2">
+                  <Link
+                    className="rounded-lg border border-zinc-400 bg-white px-4 py-2 text-sm font-semibold text-zinc-800 transition hover:border-zinc-800 hover:text-red-700"
+                    href={getShowMoreHref(query, resultLimit)}
+                  >
+                    Show more
+                  </Link>
+                </div>
+              ) : null}
             </section>
           ) : null}
 

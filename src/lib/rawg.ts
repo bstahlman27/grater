@@ -57,7 +57,10 @@ function toRawgGame(game: RawgGameResponse): RawgSearchGame {
   };
 }
 
-export async function searchRawgGames(query: string): Promise<RawgSearchGame[]> {
+export async function searchRawgGames(
+  query: string,
+  pageSize = 8,
+): Promise<RawgSearchGame[]> {
   const trimmedQuery = query.trim();
 
   if (!trimmedQuery) {
@@ -67,7 +70,7 @@ export async function searchRawgGames(query: string): Promise<RawgSearchGame[]> 
   const params = new URLSearchParams({
     key: getRawgApiKey(),
     search: trimmedQuery,
-    page_size: "8",
+    page_size: String(pageSize),
   });
 
   const response = await fetch(`${RAWG_BASE_URL}/games?${params.toString()}`, {

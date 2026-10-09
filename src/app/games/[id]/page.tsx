@@ -32,7 +32,7 @@ export default async function GameDetailPage({
             {game.coverUrl ? (
               <Image
                 alt=""
-                className="h-full w-full object-cover"
+                className="h-full w-full object-contain"
                 fill
                 priority
                 sizes="(max-width: 1024px) 100vw, 18rem"
