@@ -5,6 +5,7 @@ import { logoutAction } from "@/app/login/actions";
 const navItems = [
   { href: "/", label: "Home" },
   { href: "/games", label: "Games" },
+  { href: "/friends", label: "Friends" },
   { href: "/profile", label: "Profile" },
 ];
 
