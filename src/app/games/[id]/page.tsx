@@ -27,15 +27,15 @@ export default async function GameDetailPage({
       <div className="mx-auto w-full max-w-6xl px-6 py-6 sm:px-8 lg:px-10">
         <AppHeader />
 
-        <section className="grid gap-8 py-10 lg:grid-cols-[18rem_1fr]">
-          <div className="relative aspect-[3/4] overflow-hidden rounded-lg bg-zinc-200 shadow-sm">
+        <section className="grid gap-8 py-10">
+          <div className="relative aspect-video overflow-hidden rounded-lg bg-zinc-200 shadow-sm">
             {game.coverUrl ? (
               <Image
                 alt=""
-                className="h-full w-full object-contain"
+                className="h-full w-full object-cover"
                 fill
                 priority
-                sizes="(max-width: 1024px) 100vw, 18rem"
+                sizes="(max-width: 1152px) 100vw, 72rem"
                 src={game.coverUrl}
               />
             ) : (

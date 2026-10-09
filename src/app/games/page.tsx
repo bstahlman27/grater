@@ -45,11 +45,11 @@ function RawgResultCard({ game }: { game: RawgSearchGame }) {
         className="group grid w-full cursor-pointer gap-4 rounded-lg border border-zinc-300 bg-white p-4 text-left shadow-sm transition hover:border-zinc-500 sm:grid-cols-[8rem_1fr]"
         type="submit"
       >
-        <span className="relative aspect-[16/10] overflow-hidden rounded-md bg-zinc-200 sm:aspect-[3/4]">
+        <span className="relative aspect-video overflow-hidden rounded-md bg-zinc-200">
           {game.backgroundUrl ? (
             <Image
               alt=""
-              className="h-full w-full object-contain"
+              className="h-full w-full object-cover"
               fill
               sizes="(max-width: 768px) 100vw, 8rem"
               src={game.backgroundUrl}

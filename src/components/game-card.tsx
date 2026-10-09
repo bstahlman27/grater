@@ -9,16 +9,16 @@ type GameCardProps = {
 export function GameCard({ game }: GameCardProps) {
   return (
     <Link
-      className="group grid grid-cols-[5rem_1fr] gap-4 rounded-lg border border-zinc-300 bg-white p-4 shadow-sm transition hover:border-zinc-500"
+      className="group grid gap-4 rounded-lg border border-zinc-300 bg-white p-4 shadow-sm transition hover:border-zinc-500 sm:grid-cols-[8rem_1fr]"
       href={`/games/${game.slug}`}
     >
-      <div className="relative aspect-[3/4] overflow-hidden rounded-md bg-zinc-200">
+      <div className="relative aspect-video overflow-hidden rounded-md bg-zinc-200">
         {game.coverUrl ? (
           <Image
             alt=""
-            className="h-full w-full object-contain"
+            className="h-full w-full object-cover"
             fill
-            sizes="5rem"
+            sizes="(max-width: 640px) 100vw, 8rem"
             src={game.coverUrl}
           />
         ) : (
