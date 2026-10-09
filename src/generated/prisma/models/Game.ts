@@ -289,6 +289,7 @@ export type GameWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Game"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Game"> | Date | string
   reviews?: Prisma.ReviewListRelationFilter
+  savedGameItems?: Prisma.SavedGameItemListRelationFilter
   playLaterItems?: Prisma.PlayLaterItemListRelationFilter
   installedGameItems?: Prisma.InstalledGameItemListRelationFilter
 }
@@ -308,6 +309,7 @@ export type GameOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   reviews?: Prisma.ReviewOrderByRelationAggregateInput
+  savedGameItems?: Prisma.SavedGameItemOrderByRelationAggregateInput
   playLaterItems?: Prisma.PlayLaterItemOrderByRelationAggregateInput
   installedGameItems?: Prisma.InstalledGameItemOrderByRelationAggregateInput
 }
@@ -330,6 +332,7 @@ export type GameWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Game"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Game"> | Date | string
   reviews?: Prisma.ReviewListRelationFilter
+  savedGameItems?: Prisma.SavedGameItemListRelationFilter
   playLaterItems?: Prisma.PlayLaterItemListRelationFilter
   installedGameItems?: Prisma.InstalledGameItemListRelationFilter
 }, "id" | "rawgId" | "slug">
@@ -389,6 +392,7 @@ export type GameCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reviews?: Prisma.ReviewCreateNestedManyWithoutGameInput
+  savedGameItems?: Prisma.SavedGameItemCreateNestedManyWithoutGameInput
   playLaterItems?: Prisma.PlayLaterItemCreateNestedManyWithoutGameInput
   installedGameItems?: Prisma.InstalledGameItemCreateNestedManyWithoutGameInput
 }
@@ -408,6 +412,7 @@ export type GameUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutGameInput
+  savedGameItems?: Prisma.SavedGameItemUncheckedCreateNestedManyWithoutGameInput
   playLaterItems?: Prisma.PlayLaterItemUncheckedCreateNestedManyWithoutGameInput
   installedGameItems?: Prisma.InstalledGameItemUncheckedCreateNestedManyWithoutGameInput
 }
@@ -427,6 +432,7 @@ export type GameUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviews?: Prisma.ReviewUpdateManyWithoutGameNestedInput
+  savedGameItems?: Prisma.SavedGameItemUpdateManyWithoutGameNestedInput
   playLaterItems?: Prisma.PlayLaterItemUpdateManyWithoutGameNestedInput
   installedGameItems?: Prisma.InstalledGameItemUpdateManyWithoutGameNestedInput
 }
@@ -446,6 +452,7 @@ export type GameUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutGameNestedInput
+  savedGameItems?: Prisma.SavedGameItemUncheckedUpdateManyWithoutGameNestedInput
   playLaterItems?: Prisma.PlayLaterItemUncheckedUpdateManyWithoutGameNestedInput
   installedGameItems?: Prisma.InstalledGameItemUncheckedUpdateManyWithoutGameNestedInput
 }
@@ -591,6 +598,20 @@ export type NullableFloatFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type GameCreateNestedOneWithoutSavedGameItemsInput = {
+  create?: Prisma.XOR<Prisma.GameCreateWithoutSavedGameItemsInput, Prisma.GameUncheckedCreateWithoutSavedGameItemsInput>
+  connectOrCreate?: Prisma.GameCreateOrConnectWithoutSavedGameItemsInput
+  connect?: Prisma.GameWhereUniqueInput
+}
+
+export type GameUpdateOneRequiredWithoutSavedGameItemsNestedInput = {
+  create?: Prisma.XOR<Prisma.GameCreateWithoutSavedGameItemsInput, Prisma.GameUncheckedCreateWithoutSavedGameItemsInput>
+  connectOrCreate?: Prisma.GameCreateOrConnectWithoutSavedGameItemsInput
+  upsert?: Prisma.GameUpsertWithoutSavedGameItemsInput
+  connect?: Prisma.GameWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.GameUpdateToOneWithWhereWithoutSavedGameItemsInput, Prisma.GameUpdateWithoutSavedGameItemsInput>, Prisma.GameUncheckedUpdateWithoutSavedGameItemsInput>
+}
+
 export type GameCreateNestedOneWithoutReviewsInput = {
   create?: Prisma.XOR<Prisma.GameCreateWithoutReviewsInput, Prisma.GameUncheckedCreateWithoutReviewsInput>
   connectOrCreate?: Prisma.GameCreateOrConnectWithoutReviewsInput
@@ -633,6 +654,98 @@ export type GameUpdateOneRequiredWithoutInstalledGameItemsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.GameUpdateToOneWithWhereWithoutInstalledGameItemsInput, Prisma.GameUpdateWithoutInstalledGameItemsInput>, Prisma.GameUncheckedUpdateWithoutInstalledGameItemsInput>
 }
 
+export type GameCreateWithoutSavedGameItemsInput = {
+  id?: string
+  rawgId: number
+  slug: string
+  title: string
+  releasedAt?: Date | string | null
+  backgroundUrl?: string | null
+  coverUrl?: string | null
+  summary?: string | null
+  metacritic?: number | null
+  rawgRating?: number | null
+  rawgLastSyncedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  reviews?: Prisma.ReviewCreateNestedManyWithoutGameInput
+  playLaterItems?: Prisma.PlayLaterItemCreateNestedManyWithoutGameInput
+  installedGameItems?: Prisma.InstalledGameItemCreateNestedManyWithoutGameInput
+}
+
+export type GameUncheckedCreateWithoutSavedGameItemsInput = {
+  id?: string
+  rawgId: number
+  slug: string
+  title: string
+  releasedAt?: Date | string | null
+  backgroundUrl?: string | null
+  coverUrl?: string | null
+  summary?: string | null
+  metacritic?: number | null
+  rawgRating?: number | null
+  rawgLastSyncedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutGameInput
+  playLaterItems?: Prisma.PlayLaterItemUncheckedCreateNestedManyWithoutGameInput
+  installedGameItems?: Prisma.InstalledGameItemUncheckedCreateNestedManyWithoutGameInput
+}
+
+export type GameCreateOrConnectWithoutSavedGameItemsInput = {
+  where: Prisma.GameWhereUniqueInput
+  create: Prisma.XOR<Prisma.GameCreateWithoutSavedGameItemsInput, Prisma.GameUncheckedCreateWithoutSavedGameItemsInput>
+}
+
+export type GameUpsertWithoutSavedGameItemsInput = {
+  update: Prisma.XOR<Prisma.GameUpdateWithoutSavedGameItemsInput, Prisma.GameUncheckedUpdateWithoutSavedGameItemsInput>
+  create: Prisma.XOR<Prisma.GameCreateWithoutSavedGameItemsInput, Prisma.GameUncheckedCreateWithoutSavedGameItemsInput>
+  where?: Prisma.GameWhereInput
+}
+
+export type GameUpdateToOneWithWhereWithoutSavedGameItemsInput = {
+  where?: Prisma.GameWhereInput
+  data: Prisma.XOR<Prisma.GameUpdateWithoutSavedGameItemsInput, Prisma.GameUncheckedUpdateWithoutSavedGameItemsInput>
+}
+
+export type GameUpdateWithoutSavedGameItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  rawgId?: Prisma.IntFieldUpdateOperationsInput | number
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  releasedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  backgroundUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metacritic?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  rawgRating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  rawgLastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reviews?: Prisma.ReviewUpdateManyWithoutGameNestedInput
+  playLaterItems?: Prisma.PlayLaterItemUpdateManyWithoutGameNestedInput
+  installedGameItems?: Prisma.InstalledGameItemUpdateManyWithoutGameNestedInput
+}
+
+export type GameUncheckedUpdateWithoutSavedGameItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  rawgId?: Prisma.IntFieldUpdateOperationsInput | number
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  releasedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  backgroundUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  coverUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metacritic?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  rawgRating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  rawgLastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutGameNestedInput
+  playLaterItems?: Prisma.PlayLaterItemUncheckedUpdateManyWithoutGameNestedInput
+  installedGameItems?: Prisma.InstalledGameItemUncheckedUpdateManyWithoutGameNestedInput
+}
+
 export type GameCreateWithoutReviewsInput = {
   id?: string
   rawgId: number
@@ -647,6 +760,7 @@ export type GameCreateWithoutReviewsInput = {
   rawgLastSyncedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  savedGameItems?: Prisma.SavedGameItemCreateNestedManyWithoutGameInput
   playLaterItems?: Prisma.PlayLaterItemCreateNestedManyWithoutGameInput
   installedGameItems?: Prisma.InstalledGameItemCreateNestedManyWithoutGameInput
 }
@@ -665,6 +779,7 @@ export type GameUncheckedCreateWithoutReviewsInput = {
   rawgLastSyncedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  savedGameItems?: Prisma.SavedGameItemUncheckedCreateNestedManyWithoutGameInput
   playLaterItems?: Prisma.PlayLaterItemUncheckedCreateNestedManyWithoutGameInput
   installedGameItems?: Prisma.InstalledGameItemUncheckedCreateNestedManyWithoutGameInput
 }
@@ -699,6 +814,7 @@ export type GameUpdateWithoutReviewsInput = {
   rawgLastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  savedGameItems?: Prisma.SavedGameItemUpdateManyWithoutGameNestedInput
   playLaterItems?: Prisma.PlayLaterItemUpdateManyWithoutGameNestedInput
   installedGameItems?: Prisma.InstalledGameItemUpdateManyWithoutGameNestedInput
 }
@@ -717,6 +833,7 @@ export type GameUncheckedUpdateWithoutReviewsInput = {
   rawgLastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  savedGameItems?: Prisma.SavedGameItemUncheckedUpdateManyWithoutGameNestedInput
   playLaterItems?: Prisma.PlayLaterItemUncheckedUpdateManyWithoutGameNestedInput
   installedGameItems?: Prisma.InstalledGameItemUncheckedUpdateManyWithoutGameNestedInput
 }
@@ -736,6 +853,7 @@ export type GameCreateWithoutPlayLaterItemsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reviews?: Prisma.ReviewCreateNestedManyWithoutGameInput
+  savedGameItems?: Prisma.SavedGameItemCreateNestedManyWithoutGameInput
   installedGameItems?: Prisma.InstalledGameItemCreateNestedManyWithoutGameInput
 }
 
@@ -754,6 +872,7 @@ export type GameUncheckedCreateWithoutPlayLaterItemsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutGameInput
+  savedGameItems?: Prisma.SavedGameItemUncheckedCreateNestedManyWithoutGameInput
   installedGameItems?: Prisma.InstalledGameItemUncheckedCreateNestedManyWithoutGameInput
 }
 
@@ -788,6 +907,7 @@ export type GameUpdateWithoutPlayLaterItemsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviews?: Prisma.ReviewUpdateManyWithoutGameNestedInput
+  savedGameItems?: Prisma.SavedGameItemUpdateManyWithoutGameNestedInput
   installedGameItems?: Prisma.InstalledGameItemUpdateManyWithoutGameNestedInput
 }
 
@@ -806,6 +926,7 @@ export type GameUncheckedUpdateWithoutPlayLaterItemsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutGameNestedInput
+  savedGameItems?: Prisma.SavedGameItemUncheckedUpdateManyWithoutGameNestedInput
   installedGameItems?: Prisma.InstalledGameItemUncheckedUpdateManyWithoutGameNestedInput
 }
 
@@ -824,6 +945,7 @@ export type GameCreateWithoutInstalledGameItemsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reviews?: Prisma.ReviewCreateNestedManyWithoutGameInput
+  savedGameItems?: Prisma.SavedGameItemCreateNestedManyWithoutGameInput
   playLaterItems?: Prisma.PlayLaterItemCreateNestedManyWithoutGameInput
 }
 
@@ -842,6 +964,7 @@ export type GameUncheckedCreateWithoutInstalledGameItemsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutGameInput
+  savedGameItems?: Prisma.SavedGameItemUncheckedCreateNestedManyWithoutGameInput
   playLaterItems?: Prisma.PlayLaterItemUncheckedCreateNestedManyWithoutGameInput
 }
 
@@ -876,6 +999,7 @@ export type GameUpdateWithoutInstalledGameItemsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviews?: Prisma.ReviewUpdateManyWithoutGameNestedInput
+  savedGameItems?: Prisma.SavedGameItemUpdateManyWithoutGameNestedInput
   playLaterItems?: Prisma.PlayLaterItemUpdateManyWithoutGameNestedInput
 }
 
@@ -894,6 +1018,7 @@ export type GameUncheckedUpdateWithoutInstalledGameItemsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutGameNestedInput
+  savedGameItems?: Prisma.SavedGameItemUncheckedUpdateManyWithoutGameNestedInput
   playLaterItems?: Prisma.PlayLaterItemUncheckedUpdateManyWithoutGameNestedInput
 }
 
@@ -904,12 +1029,14 @@ export type GameUncheckedUpdateWithoutInstalledGameItemsInput = {
 
 export type GameCountOutputType = {
   reviews: number
+  savedGameItems: number
   playLaterItems: number
   installedGameItems: number
 }
 
 export type GameCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   reviews?: boolean | GameCountOutputTypeCountReviewsArgs
+  savedGameItems?: boolean | GameCountOutputTypeCountSavedGameItemsArgs
   playLaterItems?: boolean | GameCountOutputTypeCountPlayLaterItemsArgs
   installedGameItems?: boolean | GameCountOutputTypeCountInstalledGameItemsArgs
 }
@@ -929,6 +1056,13 @@ export type GameCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
  */
 export type GameCountOutputTypeCountReviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ReviewWhereInput
+}
+
+/**
+ * GameCountOutputType without action
+ */
+export type GameCountOutputTypeCountSavedGameItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SavedGameItemWhereInput
 }
 
 /**
@@ -961,6 +1095,7 @@ export type GameSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   createdAt?: boolean
   updatedAt?: boolean
   reviews?: boolean | Prisma.Game$reviewsArgs<ExtArgs>
+  savedGameItems?: boolean | Prisma.Game$savedGameItemsArgs<ExtArgs>
   playLaterItems?: boolean | Prisma.Game$playLaterItemsArgs<ExtArgs>
   installedGameItems?: boolean | Prisma.Game$installedGameItemsArgs<ExtArgs>
   _count?: boolean | Prisma.GameCountOutputTypeDefaultArgs<ExtArgs>
@@ -1017,6 +1152,7 @@ export type GameSelectScalar = {
 export type GameOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "rawgId" | "slug" | "title" | "releasedAt" | "backgroundUrl" | "coverUrl" | "summary" | "metacritic" | "rawgRating" | "rawgLastSyncedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["game"]>
 export type GameInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   reviews?: boolean | Prisma.Game$reviewsArgs<ExtArgs>
+  savedGameItems?: boolean | Prisma.Game$savedGameItemsArgs<ExtArgs>
   playLaterItems?: boolean | Prisma.Game$playLaterItemsArgs<ExtArgs>
   installedGameItems?: boolean | Prisma.Game$installedGameItemsArgs<ExtArgs>
   _count?: boolean | Prisma.GameCountOutputTypeDefaultArgs<ExtArgs>
@@ -1028,6 +1164,7 @@ export type $GamePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "Game"
   objects: {
     reviews: Prisma.$ReviewPayload<ExtArgs>[]
+    savedGameItems: Prisma.$SavedGameItemPayload<ExtArgs>[]
     playLaterItems: Prisma.$PlayLaterItemPayload<ExtArgs>[]
     installedGameItems: Prisma.$InstalledGameItemPayload<ExtArgs>[]
   }
@@ -1440,6 +1577,7 @@ readonly fields: GameFieldRefs;
 export interface Prisma__GameClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   reviews<T extends Prisma.Game$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Game$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  savedGameItems<T extends Prisma.Game$savedGameItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Game$savedGameItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SavedGameItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   playLaterItems<T extends Prisma.Game$playLaterItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Game$playLaterItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlayLaterItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   installedGameItems<T extends Prisma.Game$installedGameItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Game$installedGameItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InstalledGameItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -1898,6 +2036,30 @@ export type Game$reviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   take?: number
   skip?: number
   distinct?: Prisma.ReviewScalarFieldEnum | Prisma.ReviewScalarFieldEnum[]
+}
+
+/**
+ * Game.savedGameItems
+ */
+export type Game$savedGameItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SavedGameItem
+   */
+  select?: Prisma.SavedGameItemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SavedGameItem
+   */
+  omit?: Prisma.SavedGameItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SavedGameItemInclude<ExtArgs> | null
+  where?: Prisma.SavedGameItemWhereInput
+  orderBy?: Prisma.SavedGameItemOrderByWithRelationInput | Prisma.SavedGameItemOrderByWithRelationInput[]
+  cursor?: Prisma.SavedGameItemWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SavedGameItemScalarFieldEnum | Prisma.SavedGameItemScalarFieldEnum[]
 }
 
 /**

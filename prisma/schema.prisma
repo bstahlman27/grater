@@ -30,6 +30,7 @@ model Profile {
   updatedAt   DateTime @updatedAt
 
   reviews                Review[]
+  savedGameItems         SavedGameItem[]
   playLaterItems         PlayLaterItem[]
   installedGameItems     InstalledGameItem[]
   friendshipsAsUserA     Friendship[]        @relation("FriendshipUserA")
@@ -53,8 +54,22 @@ model Game {
   updatedAt       DateTime  @updatedAt
 
   reviews            Review[]
+  savedGameItems     SavedGameItem[]
   playLaterItems     PlayLaterItem[]
   installedGameItems InstalledGameItem[]
+}
+
+model SavedGameItem {
+  id        String   @id @default(uuid()) @db.Uuid
+  profileId String   @db.Uuid
+  gameId    String   @db.Uuid
+  createdAt DateTime @default(now())
+
+  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  game    Game    @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@unique([profileId, gameId])
+  @@index([gameId])
 }
 
 model Review {

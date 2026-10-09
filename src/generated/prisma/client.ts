@@ -52,6 +52,11 @@ export type Profile = Prisma.ProfileModel
  */
 export type Game = Prisma.GameModel
 /**
+ * Model SavedGameItem
+ * 
+ */
+export type SavedGameItem = Prisma.SavedGameItemModel
+/**
  * Model Review
  * 
  */

@@ -51,6 +51,11 @@ export type SaveReviewInput = {
   visibility: ListedGame["visibility"];
 };
 
+type SavedGameLibrary = {
+  games: GameSummary[];
+  profile: ProfileSummary | null;
+};
+
 function formatDate(date: Date | null) {
   if (!date) {
     return "Unknown";
@@ -106,14 +111,50 @@ function toReviewSummary(review: ReviewRecord): ReviewSummary {
   };
 }
 
-export async function getAllGames(): Promise<GameSummary[]> {
-  const games = await prisma.game.findMany({
-    orderBy: {
-      title: "asc",
-    },
-  });
+export async function getSavedGameLibrary(): Promise<SavedGameLibrary> {
+  const signedInProfile = await getSignedInProfile();
 
-  return games.map(toGameSummary);
+  if (!signedInProfile) {
+    return {
+      games: [],
+      profile: null,
+    };
+  }
+
+  const [profile, items] = await Promise.all([
+    prisma.profile.findUnique({
+      where: {
+        id: signedInProfile.id,
+      },
+      select: {
+        username: true,
+        displayName: true,
+        bio: true,
+      },
+    }),
+    prisma.savedGameItem.findMany({
+      where: {
+        profileId: signedInProfile.id,
+      },
+      include: {
+        game: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    }),
+  ]);
+
+  return {
+    games: items.map((item) => toGameSummary(item.game)),
+    profile: profile
+      ? {
+          username: profile.username,
+          displayName: profile.displayName ?? profile.username,
+          bio: profile.bio,
+        }
+      : null,
+  };
 }
 
 export async function getGameSlugs() {
@@ -312,6 +353,7 @@ export async function getCurrentProfile(): Promise<ProfileSummary | null> {
 }
 
 export async function cacheRawgGame(rawgId: number): Promise<GameSummary> {
+  const profile = await requireSignedInProfile();
   const rawgGame = await getRawgGameDetails(rawgId);
   const releasedAt = rawgGame.releasedAt ? new Date(rawgGame.releasedAt) : null;
 
@@ -338,6 +380,8 @@ export async function cacheRawgGame(rawgId: number): Promise<GameSummary> {
         rawgLastSyncedAt: new Date(),
       },
     });
+
+    await saveGameToProfile(profile.id, game.id);
 
     return toGameSummary(game);
   }
@@ -366,6 +410,8 @@ export async function cacheRawgGame(rawgId: number): Promise<GameSummary> {
       },
     });
 
+    await saveGameToProfile(profile.id, game.id);
+
     return toGameSummary(game);
   }
 
@@ -384,7 +430,25 @@ export async function cacheRawgGame(rawgId: number): Promise<GameSummary> {
     },
   });
 
+  await saveGameToProfile(profile.id, game.id);
+
   return toGameSummary(game);
+}
+
+async function saveGameToProfile(profileId: string, gameId: string) {
+  await prisma.savedGameItem.upsert({
+    where: {
+      profileId_gameId: {
+        profileId,
+        gameId,
+      },
+    },
+    update: {},
+    create: {
+      profileId,
+      gameId,
+    },
+  });
 }
 
 export async function togglePlayLaterGame(slug: string) {

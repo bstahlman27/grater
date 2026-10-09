@@ -9,14 +9,20 @@ if (!connectionString) {
 
 const globalForPrisma = globalThis as unknown as {
   prisma?: InstanceType<typeof PrismaClient>;
+  prismaSchemaVersion?: string;
 };
 
+const prismaSchemaVersion = "20261009120000_add_saved_game_items";
+const existingPrisma = globalForPrisma.prisma;
+
 export const prisma =
-  globalForPrisma.prisma ??
-  new PrismaClient({
-    adapter: new PrismaPg({ connectionString }),
-  });
+  existingPrisma && globalForPrisma.prismaSchemaVersion === prismaSchemaVersion
+    ? existingPrisma
+    : new PrismaClient({
+        adapter: new PrismaPg({ connectionString }),
+      });
 
 if (process.env.NODE_ENV !== "production") {
   globalForPrisma.prisma = prisma;
+  globalForPrisma.prismaSchemaVersion = prismaSchemaVersion;
 }

@@ -53,6 +53,7 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   Profile: 'Profile',
   Game: 'Game',
+  SavedGameItem: 'SavedGameItem',
   Review: 'Review',
   PlayLaterItem: 'PlayLaterItem',
   InstalledGameItem: 'InstalledGameItem',
@@ -107,6 +108,16 @@ export const GameScalarFieldEnum = {
 } as const
 
 export type GameScalarFieldEnum = (typeof GameScalarFieldEnum)[keyof typeof GameScalarFieldEnum]
+
+
+export const SavedGameItemScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  gameId: 'gameId',
+  createdAt: 'createdAt'
+} as const
+
+export type SavedGameItemScalarFieldEnum = (typeof SavedGameItemScalarFieldEnum)[keyof typeof SavedGameItemScalarFieldEnum]
 
 
 export const ReviewScalarFieldEnum = {

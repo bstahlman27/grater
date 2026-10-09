@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { AppHeader } from "@/components/app-header";
 import { GameCard } from "@/components/game-card";
-import { getAllGames } from "@/data/grater";
+import { getSavedGameLibrary } from "@/data/grater";
 import { searchRawgGames, type RawgSearchGame } from "@/lib/rawg";
 import { cacheRawgGameAction } from "./actions";
 
@@ -37,52 +37,80 @@ function getResultLimit(value: string | string[] | undefined) {
   return Math.min(Math.max(limit, DEFAULT_RESULT_LIMIT), MAX_RESULT_LIMIT);
 }
 
-function RawgResultCard({ game }: { game: RawgSearchGame }) {
+function RawgResultContent({
+  game,
+  label,
+}: {
+  game: RawgSearchGame;
+  label: string;
+}) {
+  return (
+    <>
+      <span className="relative block aspect-video overflow-hidden bg-zinc-800">
+        {game.backgroundUrl ? (
+          <Image
+            alt=""
+            className="h-full w-full object-cover"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 33vw, 24rem"
+            src={game.backgroundUrl}
+          />
+        ) : (
+          <span className="flex h-full items-end bg-zinc-700 p-4 text-xs font-semibold uppercase text-white">
+            {game.releaseYear}
+          </span>
+        )}
+      </span>
+
+      <span className="flex min-h-36 flex-col gap-4 p-4">
+        <span>
+          <span className="flex flex-wrap items-center gap-2">
+            <span className="line-clamp-2 text-xl font-semibold leading-6 text-zinc-950 group-hover:text-red-700">
+              {game.title}
+            </span>
+            <span className="rounded-md bg-zinc-100 px-2 py-1 text-xs font-medium text-zinc-600">
+              {game.releaseYear}
+            </span>
+          </span>
+          <span className="mt-2 block text-sm text-zinc-600">
+            {game.metacritic
+              ? `Metacritic ${game.metacritic}`
+              : "No Metacritic score"}
+            {game.rawgRating ? ` - RAWG ${game.rawgRating.toFixed(1)}` : ""}
+          </span>
+        </span>
+
+        <span className="mt-auto w-fit rounded-md bg-zinc-950 px-3 py-1 text-sm font-semibold text-white group-hover:bg-red-700">
+          {label}
+        </span>
+      </span>
+    </>
+  );
+}
+
+function RawgResultCard({
+  canSave,
+  game,
+}: {
+  canSave: boolean;
+  game: RawgSearchGame;
+}) {
+  const className =
+    "group block w-full cursor-pointer overflow-hidden rounded-lg border border-zinc-300 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:border-zinc-500 hover:shadow-lg";
+
+  if (!canSave) {
+    return (
+      <Link className={className} href="/login">
+        <RawgResultContent game={game} label="Log in to save" />
+      </Link>
+    );
+  }
+
   return (
     <form action={cacheRawgGameAction}>
       <input name="rawgId" type="hidden" value={game.rawgId} />
-      <button
-        className="group block w-full cursor-pointer overflow-hidden rounded-lg border border-zinc-300 bg-white text-left shadow-sm transition hover:-translate-y-0.5 hover:border-zinc-500 hover:shadow-lg"
-        type="submit"
-      >
-        <span className="relative block aspect-video overflow-hidden bg-zinc-800">
-          {game.backgroundUrl ? (
-            <Image
-              alt=""
-              className="h-full w-full object-cover"
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 33vw, 24rem"
-              src={game.backgroundUrl}
-            />
-          ) : (
-            <span className="flex h-full items-end bg-zinc-700 p-4 text-xs font-semibold uppercase text-white">
-              {game.releaseYear}
-            </span>
-          )}
-        </span>
-
-        <span className="flex min-h-36 flex-col gap-4 p-4">
-          <span>
-            <span className="flex flex-wrap items-center gap-2">
-              <span className="line-clamp-2 text-xl font-semibold leading-6 text-zinc-950 group-hover:text-red-700">
-                {game.title}
-              </span>
-              <span className="rounded-md bg-zinc-100 px-2 py-1 text-xs font-medium text-zinc-600">
-                {game.releaseYear}
-              </span>
-            </span>
-            <span className="mt-2 block text-sm text-zinc-600">
-              {game.metacritic
-                ? `Metacritic ${game.metacritic}`
-                : "No Metacritic score"}
-              {game.rawgRating ? ` - RAWG ${game.rawgRating.toFixed(1)}` : ""}
-            </span>
-          </span>
-
-          <span className="mt-auto w-fit rounded-md bg-zinc-950 px-3 py-1 text-sm font-semibold text-white group-hover:bg-red-700">
-            Save to Grater
-          </span>
-        </span>
+      <button className={className} type="submit">
+        <RawgResultContent game={game} label="Save to Grater" />
       </button>
     </form>
   );
@@ -98,10 +126,11 @@ function getShowMoreHref(query: string, limit: number) {
 }
 
 export default async function GamesPage({ searchParams }: GamesPageProps) {
-  const [{ limit, q }, cachedGames] = await Promise.all([
+  const [{ limit, q }, savedGameLibrary] = await Promise.all([
     searchParams,
-    getAllGames(),
+    getSavedGameLibrary(),
   ]);
+  const { games: savedGames, profile: currentProfile } = savedGameLibrary;
   const query = getQuery(q).trim();
   const resultLimit = getResultLimit(limit);
   let rawgResults: RawgSearchGame[] = [];
@@ -186,7 +215,11 @@ export default async function GamesPage({ searchParams }: GamesPageProps) {
 
               <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
                 {rawgResults.map((game) => (
-                  <RawgResultCard game={game} key={game.rawgId} />
+                  <RawgResultCard
+                    canSave={Boolean(currentProfile)}
+                    game={game}
+                    key={game.rawgId}
+                  />
                 ))}
               </div>
 
@@ -208,16 +241,31 @@ export default async function GamesPage({ searchParams }: GamesPageProps) {
           <section className="mt-10 space-y-4">
             <div>
               <p className="text-sm font-medium uppercase text-red-700">
-                Cached games
+                Your library
               </p>
-              <h3 className="text-xl font-semibold">Saved in Grater</h3>
+              <h3 className="text-xl font-semibold">Your saved games</h3>
             </div>
 
-            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-              {cachedGames.map((game) => (
-                <GameCard game={game} key={game.slug} />
-              ))}
-            </div>
+            {!currentProfile ? (
+              <p className="rounded-lg border border-zinc-300 bg-white p-4 text-sm text-zinc-700">
+                Log in to save games from RAWG to your library.
+              </p>
+            ) : null}
+
+            {currentProfile && savedGames.length === 0 ? (
+              <p className="rounded-lg border border-zinc-300 bg-white p-4 text-sm text-zinc-700">
+                No saved games yet. Save a RAWG result to start building your
+                library.
+              </p>
+            ) : null}
+
+            {savedGames.length > 0 ? (
+              <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                {savedGames.map((game) => (
+                  <GameCard game={game} key={game.slug} />
+                ))}
+              </div>
+            ) : null}
           </section>
         </section>
       </div>

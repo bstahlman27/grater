@@ -399,6 +399,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   Profile: 'Profile',
   Game: 'Game',
+  SavedGameItem: 'SavedGameItem',
   Review: 'Review',
   PlayLaterItem: 'PlayLaterItem',
   InstalledGameItem: 'InstalledGameItem',
@@ -418,7 +419,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "profile" | "game" | "review" | "playLaterItem" | "installedGameItem" | "friendship"
+    modelProps: "profile" | "game" | "savedGameItem" | "review" | "playLaterItem" | "installedGameItem" | "friendship"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -567,6 +568,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.GameCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.GameCountAggregateOutputType> | number
+        }
+      }
+    }
+    SavedGameItem: {
+      payload: Prisma.$SavedGameItemPayload<ExtArgs>
+      fields: Prisma.SavedGameItemFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SavedGameItemFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedGameItemPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SavedGameItemFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedGameItemPayload>
+        }
+        findFirst: {
+          args: Prisma.SavedGameItemFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedGameItemPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SavedGameItemFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedGameItemPayload>
+        }
+        findMany: {
+          args: Prisma.SavedGameItemFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedGameItemPayload>[]
+        }
+        create: {
+          args: Prisma.SavedGameItemCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedGameItemPayload>
+        }
+        createMany: {
+          args: Prisma.SavedGameItemCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SavedGameItemCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedGameItemPayload>[]
+        }
+        delete: {
+          args: Prisma.SavedGameItemDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedGameItemPayload>
+        }
+        update: {
+          args: Prisma.SavedGameItemUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedGameItemPayload>
+        }
+        deleteMany: {
+          args: Prisma.SavedGameItemDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SavedGameItemUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SavedGameItemUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedGameItemPayload>[]
+        }
+        upsert: {
+          args: Prisma.SavedGameItemUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedGameItemPayload>
+        }
+        aggregate: {
+          args: Prisma.SavedGameItemAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSavedGameItem>
+        }
+        groupBy: {
+          args: Prisma.SavedGameItemGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SavedGameItemGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SavedGameItemCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SavedGameItemCountAggregateOutputType> | number
         }
       }
     }
@@ -939,6 +1014,16 @@ export const GameScalarFieldEnum = {
 export type GameScalarFieldEnum = (typeof GameScalarFieldEnum)[keyof typeof GameScalarFieldEnum]
 
 
+export const SavedGameItemScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  gameId: 'gameId',
+  createdAt: 'createdAt'
+} as const
+
+export type SavedGameItemScalarFieldEnum = (typeof SavedGameItemScalarFieldEnum)[keyof typeof SavedGameItemScalarFieldEnum]
+
+
 export const ReviewScalarFieldEnum = {
   id: 'id',
   profileId: 'profileId',
@@ -1265,6 +1350,7 @@ export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaC
 export type GlobalOmitConfig = {
   profile?: Prisma.ProfileOmit
   game?: Prisma.GameOmit
+  savedGameItem?: Prisma.SavedGameItemOmit
   review?: Prisma.ReviewOmit
   playLaterItem?: Prisma.PlayLaterItemOmit
   installedGameItem?: Prisma.InstalledGameItemOmit

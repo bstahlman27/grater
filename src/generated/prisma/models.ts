@@ -10,6 +10,7 @@
  */
 export type * from './models/Profile'
 export type * from './models/Game'
+export type * from './models/SavedGameItem'
 export type * from './models/Review'
 export type * from './models/PlayLaterItem'
 export type * from './models/InstalledGameItem'
