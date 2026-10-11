@@ -24,3 +24,11 @@ export const FriendshipStatus = {
 } as const
 
 export type FriendshipStatus = (typeof FriendshipStatus)[keyof typeof FriendshipStatus]
+
+
+export const ReviewVoteValue = {
+  LIKE: 'LIKE',
+  DISLIKE: 'DISLIKE'
+} as const
+
+export type ReviewVoteValue = (typeof ReviewVoteValue)[keyof typeof ReviewVoteValue]

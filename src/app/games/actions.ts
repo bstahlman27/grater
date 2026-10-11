@@ -4,10 +4,13 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import {
   cacheRawgGame,
+  removePlayLaterGame,
+  removeInstalledGame,
+  saveInstalledGame,
+  savePlayLaterGame,
   saveReviewForGame,
-  toggleInstalledGame,
-  togglePlayLaterGame,
 } from "@/data/grater";
+import { normalizeInstalledPlatforms } from "@/lib/platforms";
 
 function getGameSlug(formData: FormData) {
   const slug = formData.get("slug");
@@ -26,11 +29,15 @@ function revalidateGameLists(slug: string) {
   revalidatePath("/profile");
 }
 
+function getVisibility(formData: FormData) {
+  return formData.get("visibility") === "private" ? "private" : "friends";
+}
+
 export async function cacheRawgGameAction(formData: FormData) {
   const rawgId = Number(formData.get("rawgId"));
 
   if (!Number.isInteger(rawgId) || rawgId <= 0) {
-    throw new Error("A valid RAWG game id is required.");
+    throw new Error("A valid game id is required.");
   }
 
   const game = await cacheRawgGame(rawgId);
@@ -41,15 +48,34 @@ export async function cacheRawgGameAction(formData: FormData) {
 
 export async function togglePlayLaterAction(formData: FormData) {
   const slug = getGameSlug(formData);
+  const intent = formData.get("intent");
 
-  await togglePlayLaterGame(slug);
+  if (intent === "remove") {
+    await removePlayLaterGame(slug);
+  } else {
+    await savePlayLaterGame(slug, {
+      visibility: getVisibility(formData),
+    });
+  }
   revalidateGameLists(slug);
 }
 
 export async function toggleInstalledAction(formData: FormData) {
   const slug = getGameSlug(formData);
+  const intent = formData.get("intent");
 
-  await toggleInstalledGame(slug);
+  if (intent === "remove") {
+    await removeInstalledGame(slug);
+  } else {
+    await saveInstalledGame(
+      slug,
+      normalizeInstalledPlatforms(formData.getAll("platforms")),
+      {
+        visibility: getVisibility(formData),
+      },
+    );
+  }
+
   revalidateGameLists(slug);
 }
 
@@ -57,20 +83,22 @@ export async function saveReviewAction(formData: FormData) {
   const slug = getGameSlug(formData);
   const rating = Number(formData.get("rating"));
   const rawBody = formData.get("body");
-  const rawVisibility = formData.get("visibility");
 
-  if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
-    throw new Error("Rating must be between 1 and 5 stars.");
+  if (
+    !Number.isFinite(rating) ||
+    rating < 0.5 ||
+    rating > 5 ||
+    !Number.isInteger(rating * 2)
+  ) {
+    throw new Error("Rating must be between 0.5 and 5 stars.");
   }
 
   const body = typeof rawBody === "string" ? rawBody.trim() : "";
-  const visibility = rawVisibility === "private" ? "private" : "friends";
-
   await saveReviewForGame(slug, {
     body: body || null,
     containsSpoilers: formData.get("containsSpoilers") === "on",
     rating,
-    visibility,
+    visibility: getVisibility(formData),
   });
   revalidateGameLists(slug);
 }

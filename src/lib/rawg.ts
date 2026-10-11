@@ -34,7 +34,7 @@ function getRawgApiKey() {
   const key = process.env.RAWG_API_KEY;
 
   if (!key) {
-    throw new Error("RAWG_API_KEY is required to search RAWG.");
+    throw new Error("Game search is not configured yet.");
   }
 
   return key;
@@ -80,7 +80,7 @@ export async function searchRawgGames(
   });
 
   if (!response.ok) {
-    throw new Error(`RAWG search failed with status ${response.status}.`);
+    throw new Error(`Game search failed with status ${response.status}.`);
   }
 
   const data = (await response.json()) as RawgSearchResponse;
@@ -100,7 +100,7 @@ export async function getRawgGameDetails(rawgId: number): Promise<RawgGameDetail
   });
 
   if (!response.ok) {
-    throw new Error(`RAWG details failed with status ${response.status}.`);
+    throw new Error(`Game details failed with status ${response.status}.`);
   }
 
   const game = (await response.json()) as RawgGameResponse;

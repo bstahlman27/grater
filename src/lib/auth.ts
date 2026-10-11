@@ -4,6 +4,7 @@ import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 type ProfileIdentity = {
+  avatarUrl: string | null;
   id: string;
   username: string;
   displayName: string | null;
@@ -86,6 +87,7 @@ export async function ensureProfileForUser(user: User): Promise<ProfileIdentity>
       authUserId: user.id,
     },
     select: {
+      avatarUrl: true,
       id: true,
       username: true,
       displayName: true,
@@ -103,6 +105,7 @@ export async function ensureProfileForUser(user: User): Promise<ProfileIdentity>
         email: user.email,
       },
       select: {
+        avatarUrl: true,
         id: true,
         username: true,
         displayName: true,
@@ -119,6 +122,7 @@ export async function ensureProfileForUser(user: User): Promise<ProfileIdentity>
           authUserId: user.id,
         },
         select: {
+          avatarUrl: true,
           id: true,
           username: true,
           displayName: true,
@@ -138,6 +142,7 @@ export async function ensureProfileForUser(user: User): Promise<ProfileIdentity>
       displayName: username,
     },
     select: {
+      avatarUrl: true,
       id: true,
       username: true,
       displayName: true,

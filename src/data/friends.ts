@@ -18,6 +18,7 @@ type FriendshipRecord = {
 };
 
 type FriendProfileRecord = {
+  avatarUrl: string | null;
   id: string;
   username: string;
   displayName: string | null;
@@ -25,6 +26,7 @@ type FriendProfileRecord = {
 
 function toFriendProfile(profile: FriendProfileRecord): FriendProfile {
   return {
+    avatarUrl: profile.avatarUrl,
     id: profile.id,
     username: profile.username,
     displayName: profile.displayName ?? profile.username,
@@ -84,6 +86,7 @@ export async function getFriendsPageData(): Promise<FriendsPageData> {
     include: {
       userA: {
         select: {
+          avatarUrl: true,
           id: true,
           username: true,
           displayName: true,
@@ -91,6 +94,7 @@ export async function getFriendsPageData(): Promise<FriendsPageData> {
       },
       userB: {
         select: {
+          avatarUrl: true,
           id: true,
           username: true,
           displayName: true,

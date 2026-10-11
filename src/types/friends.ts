@@ -1,4 +1,5 @@
 export type FriendProfile = {
+  avatarUrl: string | null;
   id: string;
   username: string;
   displayName: string;

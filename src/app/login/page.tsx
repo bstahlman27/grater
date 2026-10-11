@@ -28,19 +28,19 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
 
   return (
     <main className="min-h-screen bg-[#f7f4ee] text-zinc-950">
-      <div className="mx-auto w-full max-w-6xl px-6 py-6 sm:px-8 lg:px-10">
+      <div className="mx-auto w-full max-w-7xl px-6 py-6 sm:px-8 lg:px-10">
         <AppHeader />
 
         <section className="grid gap-8 py-10 lg:grid-cols-[0.8fr_1.2fr]">
           <div>
-            <p className="text-sm font-medium uppercase text-red-700">Account</p>
+            <p className="text-sm font-medium uppercase text-emerald-600">Account</p>
             <h2 className="mt-2 text-3xl font-semibold">Sign in to Grater</h2>
             <p className="mt-4 max-w-xl leading-7 text-zinc-700">
               Accounts are backed by Supabase Auth. Your profile, reviews, and
               lists stay in the Grater Postgres tables.
             </p>
             <Link
-              className="mt-6 inline-flex text-sm font-semibold text-red-700 hover:text-red-900"
+              className="mt-6 inline-flex text-sm font-semibold text-emerald-600 hover:text-emerald-700"
               href="/games"
             >
               Browse games
@@ -77,7 +77,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
                 Email
               </label>
               <input
-                className="mt-2 min-h-11 w-full rounded-lg border border-zinc-300 px-3 outline-none ring-red-700/20 focus:border-red-700 focus:ring-4"
+                className="mt-2 min-h-11 w-full rounded-lg border border-zinc-300 px-3 outline-none ring-emerald-600/20 focus:border-emerald-600 focus:ring-4"
                 id="login-email"
                 name="email"
                 type="email"
@@ -90,7 +90,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
                 Password
               </label>
               <input
-                className="mt-2 min-h-11 w-full rounded-lg border border-zinc-300 px-3 outline-none ring-red-700/20 focus:border-red-700 focus:ring-4"
+                className="mt-2 min-h-11 w-full rounded-lg border border-zinc-300 px-3 outline-none ring-emerald-600/20 focus:border-emerald-600 focus:ring-4"
                 id="login-password"
                 name="password"
                 type="password"
@@ -116,7 +116,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
                 Email
               </label>
               <input
-                className="mt-2 min-h-11 w-full rounded-lg border border-zinc-300 px-3 outline-none ring-red-700/20 focus:border-red-700 focus:ring-4"
+                className="mt-2 min-h-11 w-full rounded-lg border border-zinc-300 px-3 outline-none ring-emerald-600/20 focus:border-emerald-600 focus:ring-4"
                 id="signup-email"
                 name="email"
                 type="email"
@@ -129,7 +129,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
                 Password
               </label>
               <input
-                className="mt-2 min-h-11 w-full rounded-lg border border-zinc-300 px-3 outline-none ring-red-700/20 focus:border-red-700 focus:ring-4"
+                className="mt-2 min-h-11 w-full rounded-lg border border-zinc-300 px-3 outline-none ring-emerald-600/20 focus:border-emerald-600 focus:ring-4"
                 id="signup-password"
                 name="password"
                 type="password"
@@ -137,7 +137,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
                 required
               />
               <button
-                className="mt-5 w-full rounded-lg border border-zinc-950 px-4 py-2 text-sm font-semibold text-zinc-950 hover:border-red-700 hover:text-red-700"
+                className="mt-5 w-full rounded-lg border border-zinc-950 px-4 py-2 text-sm font-semibold text-zinc-950 hover:border-emerald-600 hover:text-emerald-600"
                 type="submit"
               >
                 Sign up

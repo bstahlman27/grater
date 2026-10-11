@@ -12,7 +12,7 @@ const globalForPrisma = globalThis as unknown as {
   prismaSchemaVersion?: string;
 };
 
-const prismaSchemaVersion = "20261009120000_add_saved_game_items";
+const prismaSchemaVersion = "20261011100000_add_review_votes";
 const existingPrisma = globalForPrisma.prisma;
 
 export const prisma =

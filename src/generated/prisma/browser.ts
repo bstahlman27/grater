@@ -33,6 +33,16 @@ export type Game = Prisma.GameModel
  */
 export type SavedGameItem = Prisma.SavedGameItemModel
 /**
+ * Model ReviewComment
+ * 
+ */
+export type ReviewComment = Prisma.ReviewCommentModel
+/**
+ * Model ReviewVote
+ * 
+ */
+export type ReviewVote = Prisma.ReviewVoteModel
+/**
  * Model Review
  * 
  */

@@ -2,7 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { AppHeader } from "@/components/app-header";
 import { GameCard } from "@/components/game-card";
-import { getSavedGameLibrary } from "@/data/grater";
+import { ListPreviewCard } from "@/components/list-preview-card";
+import {
+  getInstalledGames,
+  getPlayLaterGames,
+  getSavedGameLibrary,
+} from "@/data/grater";
 import { searchRawgGames, type RawgSearchGame } from "@/lib/rawg";
 import { cacheRawgGameAction } from "./actions";
 
@@ -65,7 +70,7 @@ function RawgResultContent({
       <span className="flex min-h-36 flex-col gap-4 p-4">
         <span>
           <span className="flex flex-wrap items-center gap-2">
-            <span className="line-clamp-2 text-xl font-semibold leading-6 text-zinc-950 group-hover:text-red-700">
+            <span className="line-clamp-2 text-xl font-semibold leading-6 text-zinc-950 group-hover:text-amber-500">
               {game.title}
             </span>
             <span className="rounded-md bg-zinc-100 px-2 py-1 text-xs font-medium text-zinc-600">
@@ -76,11 +81,13 @@ function RawgResultContent({
             {game.metacritic
               ? `Metacritic ${game.metacritic}`
               : "No Metacritic score"}
-            {game.rawgRating ? ` - RAWG ${game.rawgRating.toFixed(1)}` : ""}
+            {game.rawgRating
+              ? ` - Community ${game.rawgRating.toFixed(1)}`
+              : ""}
           </span>
         </span>
 
-        <span className="mt-auto w-fit rounded-md bg-zinc-950 px-3 py-1 text-sm font-semibold text-white group-hover:bg-red-700">
+        <span className="mt-auto w-fit rounded-md bg-zinc-950 px-3 py-1 text-sm font-semibold text-white group-hover:bg-emerald-600">
           {label}
         </span>
       </span>
@@ -126,10 +133,13 @@ function getShowMoreHref(query: string, limit: number) {
 }
 
 export default async function GamesPage({ searchParams }: GamesPageProps) {
-  const [{ limit, q }, savedGameLibrary] = await Promise.all([
-    searchParams,
-    getSavedGameLibrary(),
-  ]);
+  const [{ limit, q }, savedGameLibrary, playLaterGames, installedGames] =
+    await Promise.all([
+      searchParams,
+      getSavedGameLibrary(),
+      getPlayLaterGames(),
+      getInstalledGames(),
+    ]);
   const { games: savedGames, profile: currentProfile } = savedGameLibrary;
   const query = getQuery(q).trim();
   const resultLimit = getResultLimit(limit);
@@ -141,63 +151,79 @@ export default async function GamesPage({ searchParams }: GamesPageProps) {
       rawgResults = await searchRawgGames(query, resultLimit);
     } catch (error) {
       rawgError =
-        error instanceof Error ? error.message : "RAWG search failed unexpectedly.";
+        error instanceof Error ? error.message : "Game search failed unexpectedly.";
     }
   }
 
   return (
     <main className="min-h-screen bg-[#f7f4ee] text-zinc-950">
-      <div className="mx-auto w-full max-w-6xl px-6 py-6 sm:px-8 lg:px-10">
+      <div className="mx-auto w-full max-w-7xl px-6 py-6 sm:px-8 lg:px-10">
         <AppHeader />
 
         <section className="py-10">
-          <div className="flex flex-col gap-2">
-            <p className="text-sm font-medium uppercase text-red-700">Library</p>
-            <h2 className="text-2xl font-semibold">Find a game</h2>
-            <p className="max-w-2xl leading-7 text-zinc-700">
-              Search RAWG from the server, save the game you want, then Grater
-              keeps its own cached record for reviews and lists.
-            </p>
-          </div>
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_32rem] lg:items-start">
+            <div className="flex h-full flex-col">
+              <div className="flex flex-col gap-2">
+                <p className="text-sm font-medium uppercase text-emerald-600">
+                  Games
+                </p>
+                <h2 className="text-2xl font-semibold">Find a game</h2>
+                <p className="max-w-2xl leading-7 text-zinc-700">
+                  Search for any game ever (mostly), then save it to your lists
+                  or leave a review.
+                </p>
+              </div>
 
-          <form className="mt-7 flex max-w-2xl flex-col gap-3 sm:flex-row" method="get">
-            <label className="sr-only" htmlFor="game-search">
-              Search games
-            </label>
-            <input
-              className="min-h-11 flex-1 rounded-lg border border-zinc-300 bg-white px-4 text-base outline-none ring-red-700/20 placeholder:text-zinc-400 focus:border-red-700 focus:ring-4"
-              defaultValue={query}
-              id="game-search"
-              name="q"
-              placeholder="Search for a game"
-              type="search"
-            />
-            <button
-              className="rounded-lg bg-zinc-950 px-5 py-2 text-sm font-semibold text-white hover:bg-zinc-800"
-              type="submit"
-            >
-              Search
-            </button>
-          </form>
+              <form
+                className="mt-auto flex max-w-2xl flex-col gap-3 pt-10 sm:flex-row"
+                method="get"
+              >
+                <label className="sr-only" htmlFor="game-search">
+                  Search games
+                </label>
+                <input
+                  className="min-h-11 flex-1 rounded-lg border border-zinc-300 bg-white px-4 text-base outline-none ring-emerald-600/20 placeholder:text-zinc-400 focus:border-emerald-600 focus:ring-4"
+                  defaultValue={query}
+                  id="game-search"
+                  name="q"
+                  placeholder="Search for a game"
+                  type="search"
+                />
+                <button
+                  className="rounded-lg bg-zinc-950 px-5 py-2 text-sm font-semibold text-white hover:bg-zinc-800"
+                  type="submit"
+                >
+                  Search
+                </button>
+              </form>
+            </div>
+
+            <section>
+              <h3 className="text-xl font-semibold">Your Lists</h3>
+              <div className="mt-3 grid grid-cols-2 gap-4">
+                <ListPreviewCard
+                  games={playLaterGames}
+                  href="/lists/play-later"
+                  title="Play later"
+                />
+                <ListPreviewCard
+                  games={installedGames}
+                  href="/lists/installed"
+                  title="Installed games"
+                />
+              </div>
+            </section>
+          </div>
 
           {query ? (
             <section className="mt-9 space-y-4">
               <div className="flex flex-col gap-1">
-                <p className="text-sm font-medium uppercase text-red-700">
-                  RAWG results
+                <p className="text-sm font-medium uppercase text-emerald-600">
+                  Search results
                 </p>
                 <h3 className="text-xl font-semibold">Results for {query}</h3>
                 <p className="text-sm text-zinc-600">
-                  Data and images from{" "}
-                  <a
-                    className="font-medium text-red-700 hover:text-red-900"
-                    href="https://rawg.io/"
-                    rel="noreferrer"
-                    target="_blank"
-                  >
-                    RAWG
-                  </a>
-                  .
+                  Save a result to add it to your Grater library.
                 </p>
               </div>
 
@@ -209,7 +235,7 @@ export default async function GamesPage({ searchParams }: GamesPageProps) {
 
               {!rawgError && rawgResults.length === 0 ? (
                 <p className="rounded-lg border border-zinc-300 bg-white p-4 text-sm text-zinc-700">
-                  No RAWG results found.
+                  No results found.
                 </p>
               ) : null}
 
@@ -228,7 +254,7 @@ export default async function GamesPage({ searchParams }: GamesPageProps) {
               resultLimit < MAX_RESULT_LIMIT ? (
                 <div className="flex justify-center pt-2">
                   <Link
-                    className="rounded-lg border border-zinc-400 bg-white px-4 py-2 text-sm font-semibold text-zinc-800 transition hover:border-zinc-800 hover:text-red-700"
+                    className="rounded-lg border border-zinc-400 bg-white px-4 py-2 text-sm font-semibold text-zinc-800 transition hover:border-zinc-800 hover:text-emerald-600"
                     href={getShowMoreHref(query, resultLimit)}
                   >
                     Show more
@@ -240,21 +266,21 @@ export default async function GamesPage({ searchParams }: GamesPageProps) {
 
           <section className="mt-10 space-y-4">
             <div>
-              <p className="text-sm font-medium uppercase text-red-700">
+              <p className="text-sm font-medium uppercase text-emerald-600">
                 Your library
               </p>
-              <h3 className="text-xl font-semibold">Your saved games</h3>
+              <h3 className="text-xl font-semibold">Recent Searches</h3>
             </div>
 
             {!currentProfile ? (
               <p className="rounded-lg border border-zinc-300 bg-white p-4 text-sm text-zinc-700">
-                Log in to save games from RAWG to your library.
+                Log in to save games to your library.
               </p>
             ) : null}
 
             {currentProfile && savedGames.length === 0 ? (
               <p className="rounded-lg border border-zinc-300 bg-white p-4 text-sm text-zinc-700">
-                No saved games yet. Save a RAWG result to start building your
+                No recent games yet. Search for a game to start building your
                 library.
               </p>
             ) : null}

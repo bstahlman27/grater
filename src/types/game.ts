@@ -15,11 +15,36 @@ export type GameDetail = GameSummary & {
 
 export type ReviewSummary = {
   id: string;
+  author?: {
+    username: string;
+    displayName: string;
+    avatarUrl: string | null;
+  };
+  canManage: boolean;
+  canComment: boolean;
+  canVote: boolean;
+  comments: ReviewCommentSummary[];
+  dislikeCount: number;
+  likeCount: number;
   rating: number;
   body: string;
   containsSpoilers: boolean;
+  pinned: boolean;
   updatedAt: string;
+  viewerVote: "like" | "dislike" | null;
   visibility: "private" | "friends";
+};
+
+export type ReviewCommentSummary = {
+  id: string;
+  body: string;
+  canManage: boolean;
+  createdAt: string;
+  author: {
+    username: string;
+    displayName: string;
+    avatarUrl: string | null;
+  };
 };
 
 export type ReviewedGame = {
@@ -30,13 +55,19 @@ export type ReviewedGame = {
 export type ListedGame = {
   game: GameSummary;
   visibility: "private" | "friends";
-  platform?: string | null;
+  platforms?: string[];
 };
 
 export type ProfileSummary = {
   username: string;
   displayName: string;
+  avatarUrl: string | null;
   bio: string | null;
+};
+
+export type HomeProfileSummary = ProfileSummary & {
+  friendCount: number;
+  reviewCount: number;
 };
 
 export type GameListState = {
@@ -44,5 +75,5 @@ export type GameListState = {
   playLaterVisibility: ListedGame["visibility"] | null;
   inInstalled: boolean;
   installedVisibility: ListedGame["visibility"] | null;
-  installedPlatform: string | null;
+  installedPlatforms: string[];
 };

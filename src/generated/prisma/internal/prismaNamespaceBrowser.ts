@@ -54,6 +54,8 @@ export const ModelName = {
   Profile: 'Profile',
   Game: 'Game',
   SavedGameItem: 'SavedGameItem',
+  ReviewComment: 'ReviewComment',
+  ReviewVote: 'ReviewVote',
   Review: 'Review',
   PlayLaterItem: 'PlayLaterItem',
   InstalledGameItem: 'InstalledGameItem',
@@ -120,6 +122,30 @@ export const SavedGameItemScalarFieldEnum = {
 export type SavedGameItemScalarFieldEnum = (typeof SavedGameItemScalarFieldEnum)[keyof typeof SavedGameItemScalarFieldEnum]
 
 
+export const ReviewCommentScalarFieldEnum = {
+  id: 'id',
+  reviewId: 'reviewId',
+  profileId: 'profileId',
+  body: 'body',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ReviewCommentScalarFieldEnum = (typeof ReviewCommentScalarFieldEnum)[keyof typeof ReviewCommentScalarFieldEnum]
+
+
+export const ReviewVoteScalarFieldEnum = {
+  id: 'id',
+  reviewId: 'reviewId',
+  profileId: 'profileId',
+  value: 'value',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ReviewVoteScalarFieldEnum = (typeof ReviewVoteScalarFieldEnum)[keyof typeof ReviewVoteScalarFieldEnum]
+
+
 export const ReviewScalarFieldEnum = {
   id: 'id',
   profileId: 'profileId',
@@ -128,6 +154,7 @@ export const ReviewScalarFieldEnum = {
   body: 'body',
   containsSpoilers: 'containsSpoilers',
   visibility: 'visibility',
+  pinned: 'pinned',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

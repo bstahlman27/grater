@@ -4,9 +4,10 @@ import type { GameSummary } from "@/types/game";
 
 type GameCardProps = {
   game: GameSummary;
+  platforms?: string[];
 };
 
-export function GameCard({ game }: GameCardProps) {
+export function GameCard({ game, platforms = [] }: GameCardProps) {
   return (
     <Link
       className="group block overflow-hidden rounded-lg border border-zinc-300 bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-zinc-500 hover:shadow-lg"
@@ -30,10 +31,20 @@ export function GameCard({ game }: GameCardProps) {
         )}
       </div>
       <div className="p-4">
-        <h2 className="line-clamp-2 text-xl font-semibold leading-6 text-zinc-950 group-hover:text-red-700">
+        <h2 className="line-clamp-2 text-xl font-semibold leading-6 text-zinc-950 group-hover:text-amber-500">
           {game.title}
         </h2>
-        <p className="mt-2 text-sm text-zinc-600">{game.releaseYear}</p>
+        <div className="mt-2 flex flex-wrap items-center gap-2 text-sm text-zinc-600">
+          <span>{game.releaseYear}</span>
+          {platforms.map((platform) => (
+            <span
+              className="rounded-md bg-zinc-100 px-2 py-0.5 text-xs font-semibold text-zinc-700"
+              key={platform}
+            >
+              {platform}
+            </span>
+          ))}
+        </div>
         <p className="mt-3 line-clamp-3 text-sm leading-6 text-zinc-700">
           {game.summary}
         </p>

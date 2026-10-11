@@ -215,6 +215,8 @@ export type ProfileWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Profile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Profile"> | Date | string
   reviews?: Prisma.ReviewListRelationFilter
+  reviewComments?: Prisma.ReviewCommentListRelationFilter
+  reviewVotes?: Prisma.ReviewVoteListRelationFilter
   savedGameItems?: Prisma.SavedGameItemListRelationFilter
   playLaterItems?: Prisma.PlayLaterItemListRelationFilter
   installedGameItems?: Prisma.InstalledGameItemListRelationFilter
@@ -234,6 +236,8 @@ export type ProfileOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   reviews?: Prisma.ReviewOrderByRelationAggregateInput
+  reviewComments?: Prisma.ReviewCommentOrderByRelationAggregateInput
+  reviewVotes?: Prisma.ReviewVoteOrderByRelationAggregateInput
   savedGameItems?: Prisma.SavedGameItemOrderByRelationAggregateInput
   playLaterItems?: Prisma.PlayLaterItemOrderByRelationAggregateInput
   installedGameItems?: Prisma.InstalledGameItemOrderByRelationAggregateInput
@@ -256,6 +260,8 @@ export type ProfileWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Profile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Profile"> | Date | string
   reviews?: Prisma.ReviewListRelationFilter
+  reviewComments?: Prisma.ReviewCommentListRelationFilter
+  reviewVotes?: Prisma.ReviewVoteListRelationFilter
   savedGameItems?: Prisma.SavedGameItemListRelationFilter
   playLaterItems?: Prisma.PlayLaterItemListRelationFilter
   installedGameItems?: Prisma.InstalledGameItemListRelationFilter
@@ -305,6 +311,8 @@ export type ProfileCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reviews?: Prisma.ReviewCreateNestedManyWithoutProfileInput
+  reviewComments?: Prisma.ReviewCommentCreateNestedManyWithoutProfileInput
+  reviewVotes?: Prisma.ReviewVoteCreateNestedManyWithoutProfileInput
   savedGameItems?: Prisma.SavedGameItemCreateNestedManyWithoutProfileInput
   playLaterItems?: Prisma.PlayLaterItemCreateNestedManyWithoutProfileInput
   installedGameItems?: Prisma.InstalledGameItemCreateNestedManyWithoutProfileInput
@@ -324,6 +332,8 @@ export type ProfileUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutProfileInput
+  reviewComments?: Prisma.ReviewCommentUncheckedCreateNestedManyWithoutProfileInput
+  reviewVotes?: Prisma.ReviewVoteUncheckedCreateNestedManyWithoutProfileInput
   savedGameItems?: Prisma.SavedGameItemUncheckedCreateNestedManyWithoutProfileInput
   playLaterItems?: Prisma.PlayLaterItemUncheckedCreateNestedManyWithoutProfileInput
   installedGameItems?: Prisma.InstalledGameItemUncheckedCreateNestedManyWithoutProfileInput
@@ -343,6 +353,8 @@ export type ProfileUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviews?: Prisma.ReviewUpdateManyWithoutProfileNestedInput
+  reviewComments?: Prisma.ReviewCommentUpdateManyWithoutProfileNestedInput
+  reviewVotes?: Prisma.ReviewVoteUpdateManyWithoutProfileNestedInput
   savedGameItems?: Prisma.SavedGameItemUpdateManyWithoutProfileNestedInput
   playLaterItems?: Prisma.PlayLaterItemUpdateManyWithoutProfileNestedInput
   installedGameItems?: Prisma.InstalledGameItemUpdateManyWithoutProfileNestedInput
@@ -362,6 +374,8 @@ export type ProfileUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutProfileNestedInput
+  reviewComments?: Prisma.ReviewCommentUncheckedUpdateManyWithoutProfileNestedInput
+  reviewVotes?: Prisma.ReviewVoteUncheckedUpdateManyWithoutProfileNestedInput
   savedGameItems?: Prisma.SavedGameItemUncheckedUpdateManyWithoutProfileNestedInput
   playLaterItems?: Prisma.PlayLaterItemUncheckedUpdateManyWithoutProfileNestedInput
   installedGameItems?: Prisma.InstalledGameItemUncheckedUpdateManyWithoutProfileNestedInput
@@ -473,6 +487,34 @@ export type ProfileUpdateOneRequiredWithoutSavedGameItemsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutSavedGameItemsInput, Prisma.ProfileUpdateWithoutSavedGameItemsInput>, Prisma.ProfileUncheckedUpdateWithoutSavedGameItemsInput>
 }
 
+export type ProfileCreateNestedOneWithoutReviewCommentsInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutReviewCommentsInput, Prisma.ProfileUncheckedCreateWithoutReviewCommentsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutReviewCommentsInput
+  connect?: Prisma.ProfileWhereUniqueInput
+}
+
+export type ProfileUpdateOneRequiredWithoutReviewCommentsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutReviewCommentsInput, Prisma.ProfileUncheckedCreateWithoutReviewCommentsInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutReviewCommentsInput
+  upsert?: Prisma.ProfileUpsertWithoutReviewCommentsInput
+  connect?: Prisma.ProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutReviewCommentsInput, Prisma.ProfileUpdateWithoutReviewCommentsInput>, Prisma.ProfileUncheckedUpdateWithoutReviewCommentsInput>
+}
+
+export type ProfileCreateNestedOneWithoutReviewVotesInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutReviewVotesInput, Prisma.ProfileUncheckedCreateWithoutReviewVotesInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutReviewVotesInput
+  connect?: Prisma.ProfileWhereUniqueInput
+}
+
+export type ProfileUpdateOneRequiredWithoutReviewVotesNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutReviewVotesInput, Prisma.ProfileUncheckedCreateWithoutReviewVotesInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutReviewVotesInput
+  upsert?: Prisma.ProfileUpsertWithoutReviewVotesInput
+  connect?: Prisma.ProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutReviewVotesInput, Prisma.ProfileUpdateWithoutReviewVotesInput>, Prisma.ProfileUncheckedUpdateWithoutReviewVotesInput>
+}
+
 export type ProfileCreateNestedOneWithoutReviewsInput = {
   create?: Prisma.XOR<Prisma.ProfileCreateWithoutReviewsInput, Prisma.ProfileUncheckedCreateWithoutReviewsInput>
   connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutReviewsInput
@@ -568,6 +610,8 @@ export type ProfileCreateWithoutSavedGameItemsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reviews?: Prisma.ReviewCreateNestedManyWithoutProfileInput
+  reviewComments?: Prisma.ReviewCommentCreateNestedManyWithoutProfileInput
+  reviewVotes?: Prisma.ReviewVoteCreateNestedManyWithoutProfileInput
   playLaterItems?: Prisma.PlayLaterItemCreateNestedManyWithoutProfileInput
   installedGameItems?: Prisma.InstalledGameItemCreateNestedManyWithoutProfileInput
   friendshipsAsUserA?: Prisma.FriendshipCreateNestedManyWithoutUserAInput
@@ -586,6 +630,8 @@ export type ProfileUncheckedCreateWithoutSavedGameItemsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutProfileInput
+  reviewComments?: Prisma.ReviewCommentUncheckedCreateNestedManyWithoutProfileInput
+  reviewVotes?: Prisma.ReviewVoteUncheckedCreateNestedManyWithoutProfileInput
   playLaterItems?: Prisma.PlayLaterItemUncheckedCreateNestedManyWithoutProfileInput
   installedGameItems?: Prisma.InstalledGameItemUncheckedCreateNestedManyWithoutProfileInput
   friendshipsAsUserA?: Prisma.FriendshipUncheckedCreateNestedManyWithoutUserAInput
@@ -620,6 +666,8 @@ export type ProfileUpdateWithoutSavedGameItemsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviews?: Prisma.ReviewUpdateManyWithoutProfileNestedInput
+  reviewComments?: Prisma.ReviewCommentUpdateManyWithoutProfileNestedInput
+  reviewVotes?: Prisma.ReviewVoteUpdateManyWithoutProfileNestedInput
   playLaterItems?: Prisma.PlayLaterItemUpdateManyWithoutProfileNestedInput
   installedGameItems?: Prisma.InstalledGameItemUpdateManyWithoutProfileNestedInput
   friendshipsAsUserA?: Prisma.FriendshipUpdateManyWithoutUserANestedInput
@@ -638,6 +686,200 @@ export type ProfileUncheckedUpdateWithoutSavedGameItemsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutProfileNestedInput
+  reviewComments?: Prisma.ReviewCommentUncheckedUpdateManyWithoutProfileNestedInput
+  reviewVotes?: Prisma.ReviewVoteUncheckedUpdateManyWithoutProfileNestedInput
+  playLaterItems?: Prisma.PlayLaterItemUncheckedUpdateManyWithoutProfileNestedInput
+  installedGameItems?: Prisma.InstalledGameItemUncheckedUpdateManyWithoutProfileNestedInput
+  friendshipsAsUserA?: Prisma.FriendshipUncheckedUpdateManyWithoutUserANestedInput
+  friendshipsAsUserB?: Prisma.FriendshipUncheckedUpdateManyWithoutUserBNestedInput
+  friendshipRequestsSent?: Prisma.FriendshipUncheckedUpdateManyWithoutRequestedByNestedInput
+}
+
+export type ProfileCreateWithoutReviewCommentsInput = {
+  id?: string
+  authUserId?: string | null
+  email?: string | null
+  username: string
+  displayName?: string | null
+  avatarUrl?: string | null
+  bio?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  reviews?: Prisma.ReviewCreateNestedManyWithoutProfileInput
+  reviewVotes?: Prisma.ReviewVoteCreateNestedManyWithoutProfileInput
+  savedGameItems?: Prisma.SavedGameItemCreateNestedManyWithoutProfileInput
+  playLaterItems?: Prisma.PlayLaterItemCreateNestedManyWithoutProfileInput
+  installedGameItems?: Prisma.InstalledGameItemCreateNestedManyWithoutProfileInput
+  friendshipsAsUserA?: Prisma.FriendshipCreateNestedManyWithoutUserAInput
+  friendshipsAsUserB?: Prisma.FriendshipCreateNestedManyWithoutUserBInput
+  friendshipRequestsSent?: Prisma.FriendshipCreateNestedManyWithoutRequestedByInput
+}
+
+export type ProfileUncheckedCreateWithoutReviewCommentsInput = {
+  id?: string
+  authUserId?: string | null
+  email?: string | null
+  username: string
+  displayName?: string | null
+  avatarUrl?: string | null
+  bio?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutProfileInput
+  reviewVotes?: Prisma.ReviewVoteUncheckedCreateNestedManyWithoutProfileInput
+  savedGameItems?: Prisma.SavedGameItemUncheckedCreateNestedManyWithoutProfileInput
+  playLaterItems?: Prisma.PlayLaterItemUncheckedCreateNestedManyWithoutProfileInput
+  installedGameItems?: Prisma.InstalledGameItemUncheckedCreateNestedManyWithoutProfileInput
+  friendshipsAsUserA?: Prisma.FriendshipUncheckedCreateNestedManyWithoutUserAInput
+  friendshipsAsUserB?: Prisma.FriendshipUncheckedCreateNestedManyWithoutUserBInput
+  friendshipRequestsSent?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRequestedByInput
+}
+
+export type ProfileCreateOrConnectWithoutReviewCommentsInput = {
+  where: Prisma.ProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutReviewCommentsInput, Prisma.ProfileUncheckedCreateWithoutReviewCommentsInput>
+}
+
+export type ProfileUpsertWithoutReviewCommentsInput = {
+  update: Prisma.XOR<Prisma.ProfileUpdateWithoutReviewCommentsInput, Prisma.ProfileUncheckedUpdateWithoutReviewCommentsInput>
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutReviewCommentsInput, Prisma.ProfileUncheckedCreateWithoutReviewCommentsInput>
+  where?: Prisma.ProfileWhereInput
+}
+
+export type ProfileUpdateToOneWithWhereWithoutReviewCommentsInput = {
+  where?: Prisma.ProfileWhereInput
+  data: Prisma.XOR<Prisma.ProfileUpdateWithoutReviewCommentsInput, Prisma.ProfileUncheckedUpdateWithoutReviewCommentsInput>
+}
+
+export type ProfileUpdateWithoutReviewCommentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reviews?: Prisma.ReviewUpdateManyWithoutProfileNestedInput
+  reviewVotes?: Prisma.ReviewVoteUpdateManyWithoutProfileNestedInput
+  savedGameItems?: Prisma.SavedGameItemUpdateManyWithoutProfileNestedInput
+  playLaterItems?: Prisma.PlayLaterItemUpdateManyWithoutProfileNestedInput
+  installedGameItems?: Prisma.InstalledGameItemUpdateManyWithoutProfileNestedInput
+  friendshipsAsUserA?: Prisma.FriendshipUpdateManyWithoutUserANestedInput
+  friendshipsAsUserB?: Prisma.FriendshipUpdateManyWithoutUserBNestedInput
+  friendshipRequestsSent?: Prisma.FriendshipUpdateManyWithoutRequestedByNestedInput
+}
+
+export type ProfileUncheckedUpdateWithoutReviewCommentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutProfileNestedInput
+  reviewVotes?: Prisma.ReviewVoteUncheckedUpdateManyWithoutProfileNestedInput
+  savedGameItems?: Prisma.SavedGameItemUncheckedUpdateManyWithoutProfileNestedInput
+  playLaterItems?: Prisma.PlayLaterItemUncheckedUpdateManyWithoutProfileNestedInput
+  installedGameItems?: Prisma.InstalledGameItemUncheckedUpdateManyWithoutProfileNestedInput
+  friendshipsAsUserA?: Prisma.FriendshipUncheckedUpdateManyWithoutUserANestedInput
+  friendshipsAsUserB?: Prisma.FriendshipUncheckedUpdateManyWithoutUserBNestedInput
+  friendshipRequestsSent?: Prisma.FriendshipUncheckedUpdateManyWithoutRequestedByNestedInput
+}
+
+export type ProfileCreateWithoutReviewVotesInput = {
+  id?: string
+  authUserId?: string | null
+  email?: string | null
+  username: string
+  displayName?: string | null
+  avatarUrl?: string | null
+  bio?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  reviews?: Prisma.ReviewCreateNestedManyWithoutProfileInput
+  reviewComments?: Prisma.ReviewCommentCreateNestedManyWithoutProfileInput
+  savedGameItems?: Prisma.SavedGameItemCreateNestedManyWithoutProfileInput
+  playLaterItems?: Prisma.PlayLaterItemCreateNestedManyWithoutProfileInput
+  installedGameItems?: Prisma.InstalledGameItemCreateNestedManyWithoutProfileInput
+  friendshipsAsUserA?: Prisma.FriendshipCreateNestedManyWithoutUserAInput
+  friendshipsAsUserB?: Prisma.FriendshipCreateNestedManyWithoutUserBInput
+  friendshipRequestsSent?: Prisma.FriendshipCreateNestedManyWithoutRequestedByInput
+}
+
+export type ProfileUncheckedCreateWithoutReviewVotesInput = {
+  id?: string
+  authUserId?: string | null
+  email?: string | null
+  username: string
+  displayName?: string | null
+  avatarUrl?: string | null
+  bio?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutProfileInput
+  reviewComments?: Prisma.ReviewCommentUncheckedCreateNestedManyWithoutProfileInput
+  savedGameItems?: Prisma.SavedGameItemUncheckedCreateNestedManyWithoutProfileInput
+  playLaterItems?: Prisma.PlayLaterItemUncheckedCreateNestedManyWithoutProfileInput
+  installedGameItems?: Prisma.InstalledGameItemUncheckedCreateNestedManyWithoutProfileInput
+  friendshipsAsUserA?: Prisma.FriendshipUncheckedCreateNestedManyWithoutUserAInput
+  friendshipsAsUserB?: Prisma.FriendshipUncheckedCreateNestedManyWithoutUserBInput
+  friendshipRequestsSent?: Prisma.FriendshipUncheckedCreateNestedManyWithoutRequestedByInput
+}
+
+export type ProfileCreateOrConnectWithoutReviewVotesInput = {
+  where: Prisma.ProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutReviewVotesInput, Prisma.ProfileUncheckedCreateWithoutReviewVotesInput>
+}
+
+export type ProfileUpsertWithoutReviewVotesInput = {
+  update: Prisma.XOR<Prisma.ProfileUpdateWithoutReviewVotesInput, Prisma.ProfileUncheckedUpdateWithoutReviewVotesInput>
+  create: Prisma.XOR<Prisma.ProfileCreateWithoutReviewVotesInput, Prisma.ProfileUncheckedCreateWithoutReviewVotesInput>
+  where?: Prisma.ProfileWhereInput
+}
+
+export type ProfileUpdateToOneWithWhereWithoutReviewVotesInput = {
+  where?: Prisma.ProfileWhereInput
+  data: Prisma.XOR<Prisma.ProfileUpdateWithoutReviewVotesInput, Prisma.ProfileUncheckedUpdateWithoutReviewVotesInput>
+}
+
+export type ProfileUpdateWithoutReviewVotesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reviews?: Prisma.ReviewUpdateManyWithoutProfileNestedInput
+  reviewComments?: Prisma.ReviewCommentUpdateManyWithoutProfileNestedInput
+  savedGameItems?: Prisma.SavedGameItemUpdateManyWithoutProfileNestedInput
+  playLaterItems?: Prisma.PlayLaterItemUpdateManyWithoutProfileNestedInput
+  installedGameItems?: Prisma.InstalledGameItemUpdateManyWithoutProfileNestedInput
+  friendshipsAsUserA?: Prisma.FriendshipUpdateManyWithoutUserANestedInput
+  friendshipsAsUserB?: Prisma.FriendshipUpdateManyWithoutUserBNestedInput
+  friendshipRequestsSent?: Prisma.FriendshipUpdateManyWithoutRequestedByNestedInput
+}
+
+export type ProfileUncheckedUpdateWithoutReviewVotesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  authUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutProfileNestedInput
+  reviewComments?: Prisma.ReviewCommentUncheckedUpdateManyWithoutProfileNestedInput
+  savedGameItems?: Prisma.SavedGameItemUncheckedUpdateManyWithoutProfileNestedInput
   playLaterItems?: Prisma.PlayLaterItemUncheckedUpdateManyWithoutProfileNestedInput
   installedGameItems?: Prisma.InstalledGameItemUncheckedUpdateManyWithoutProfileNestedInput
   friendshipsAsUserA?: Prisma.FriendshipUncheckedUpdateManyWithoutUserANestedInput
@@ -655,6 +897,8 @@ export type ProfileCreateWithoutReviewsInput = {
   bio?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  reviewComments?: Prisma.ReviewCommentCreateNestedManyWithoutProfileInput
+  reviewVotes?: Prisma.ReviewVoteCreateNestedManyWithoutProfileInput
   savedGameItems?: Prisma.SavedGameItemCreateNestedManyWithoutProfileInput
   playLaterItems?: Prisma.PlayLaterItemCreateNestedManyWithoutProfileInput
   installedGameItems?: Prisma.InstalledGameItemCreateNestedManyWithoutProfileInput
@@ -673,6 +917,8 @@ export type ProfileUncheckedCreateWithoutReviewsInput = {
   bio?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  reviewComments?: Prisma.ReviewCommentUncheckedCreateNestedManyWithoutProfileInput
+  reviewVotes?: Prisma.ReviewVoteUncheckedCreateNestedManyWithoutProfileInput
   savedGameItems?: Prisma.SavedGameItemUncheckedCreateNestedManyWithoutProfileInput
   playLaterItems?: Prisma.PlayLaterItemUncheckedCreateNestedManyWithoutProfileInput
   installedGameItems?: Prisma.InstalledGameItemUncheckedCreateNestedManyWithoutProfileInput
@@ -707,6 +953,8 @@ export type ProfileUpdateWithoutReviewsInput = {
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reviewComments?: Prisma.ReviewCommentUpdateManyWithoutProfileNestedInput
+  reviewVotes?: Prisma.ReviewVoteUpdateManyWithoutProfileNestedInput
   savedGameItems?: Prisma.SavedGameItemUpdateManyWithoutProfileNestedInput
   playLaterItems?: Prisma.PlayLaterItemUpdateManyWithoutProfileNestedInput
   installedGameItems?: Prisma.InstalledGameItemUpdateManyWithoutProfileNestedInput
@@ -725,6 +973,8 @@ export type ProfileUncheckedUpdateWithoutReviewsInput = {
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reviewComments?: Prisma.ReviewCommentUncheckedUpdateManyWithoutProfileNestedInput
+  reviewVotes?: Prisma.ReviewVoteUncheckedUpdateManyWithoutProfileNestedInput
   savedGameItems?: Prisma.SavedGameItemUncheckedUpdateManyWithoutProfileNestedInput
   playLaterItems?: Prisma.PlayLaterItemUncheckedUpdateManyWithoutProfileNestedInput
   installedGameItems?: Prisma.InstalledGameItemUncheckedUpdateManyWithoutProfileNestedInput
@@ -744,6 +994,8 @@ export type ProfileCreateWithoutPlayLaterItemsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reviews?: Prisma.ReviewCreateNestedManyWithoutProfileInput
+  reviewComments?: Prisma.ReviewCommentCreateNestedManyWithoutProfileInput
+  reviewVotes?: Prisma.ReviewVoteCreateNestedManyWithoutProfileInput
   savedGameItems?: Prisma.SavedGameItemCreateNestedManyWithoutProfileInput
   installedGameItems?: Prisma.InstalledGameItemCreateNestedManyWithoutProfileInput
   friendshipsAsUserA?: Prisma.FriendshipCreateNestedManyWithoutUserAInput
@@ -762,6 +1014,8 @@ export type ProfileUncheckedCreateWithoutPlayLaterItemsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutProfileInput
+  reviewComments?: Prisma.ReviewCommentUncheckedCreateNestedManyWithoutProfileInput
+  reviewVotes?: Prisma.ReviewVoteUncheckedCreateNestedManyWithoutProfileInput
   savedGameItems?: Prisma.SavedGameItemUncheckedCreateNestedManyWithoutProfileInput
   installedGameItems?: Prisma.InstalledGameItemUncheckedCreateNestedManyWithoutProfileInput
   friendshipsAsUserA?: Prisma.FriendshipUncheckedCreateNestedManyWithoutUserAInput
@@ -796,6 +1050,8 @@ export type ProfileUpdateWithoutPlayLaterItemsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviews?: Prisma.ReviewUpdateManyWithoutProfileNestedInput
+  reviewComments?: Prisma.ReviewCommentUpdateManyWithoutProfileNestedInput
+  reviewVotes?: Prisma.ReviewVoteUpdateManyWithoutProfileNestedInput
   savedGameItems?: Prisma.SavedGameItemUpdateManyWithoutProfileNestedInput
   installedGameItems?: Prisma.InstalledGameItemUpdateManyWithoutProfileNestedInput
   friendshipsAsUserA?: Prisma.FriendshipUpdateManyWithoutUserANestedInput
@@ -814,6 +1070,8 @@ export type ProfileUncheckedUpdateWithoutPlayLaterItemsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutProfileNestedInput
+  reviewComments?: Prisma.ReviewCommentUncheckedUpdateManyWithoutProfileNestedInput
+  reviewVotes?: Prisma.ReviewVoteUncheckedUpdateManyWithoutProfileNestedInput
   savedGameItems?: Prisma.SavedGameItemUncheckedUpdateManyWithoutProfileNestedInput
   installedGameItems?: Prisma.InstalledGameItemUncheckedUpdateManyWithoutProfileNestedInput
   friendshipsAsUserA?: Prisma.FriendshipUncheckedUpdateManyWithoutUserANestedInput
@@ -832,6 +1090,8 @@ export type ProfileCreateWithoutInstalledGameItemsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reviews?: Prisma.ReviewCreateNestedManyWithoutProfileInput
+  reviewComments?: Prisma.ReviewCommentCreateNestedManyWithoutProfileInput
+  reviewVotes?: Prisma.ReviewVoteCreateNestedManyWithoutProfileInput
   savedGameItems?: Prisma.SavedGameItemCreateNestedManyWithoutProfileInput
   playLaterItems?: Prisma.PlayLaterItemCreateNestedManyWithoutProfileInput
   friendshipsAsUserA?: Prisma.FriendshipCreateNestedManyWithoutUserAInput
@@ -850,6 +1110,8 @@ export type ProfileUncheckedCreateWithoutInstalledGameItemsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutProfileInput
+  reviewComments?: Prisma.ReviewCommentUncheckedCreateNestedManyWithoutProfileInput
+  reviewVotes?: Prisma.ReviewVoteUncheckedCreateNestedManyWithoutProfileInput
   savedGameItems?: Prisma.SavedGameItemUncheckedCreateNestedManyWithoutProfileInput
   playLaterItems?: Prisma.PlayLaterItemUncheckedCreateNestedManyWithoutProfileInput
   friendshipsAsUserA?: Prisma.FriendshipUncheckedCreateNestedManyWithoutUserAInput
@@ -884,6 +1146,8 @@ export type ProfileUpdateWithoutInstalledGameItemsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviews?: Prisma.ReviewUpdateManyWithoutProfileNestedInput
+  reviewComments?: Prisma.ReviewCommentUpdateManyWithoutProfileNestedInput
+  reviewVotes?: Prisma.ReviewVoteUpdateManyWithoutProfileNestedInput
   savedGameItems?: Prisma.SavedGameItemUpdateManyWithoutProfileNestedInput
   playLaterItems?: Prisma.PlayLaterItemUpdateManyWithoutProfileNestedInput
   friendshipsAsUserA?: Prisma.FriendshipUpdateManyWithoutUserANestedInput
@@ -902,6 +1166,8 @@ export type ProfileUncheckedUpdateWithoutInstalledGameItemsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutProfileNestedInput
+  reviewComments?: Prisma.ReviewCommentUncheckedUpdateManyWithoutProfileNestedInput
+  reviewVotes?: Prisma.ReviewVoteUncheckedUpdateManyWithoutProfileNestedInput
   savedGameItems?: Prisma.SavedGameItemUncheckedUpdateManyWithoutProfileNestedInput
   playLaterItems?: Prisma.PlayLaterItemUncheckedUpdateManyWithoutProfileNestedInput
   friendshipsAsUserA?: Prisma.FriendshipUncheckedUpdateManyWithoutUserANestedInput
@@ -920,6 +1186,8 @@ export type ProfileCreateWithoutFriendshipsAsUserAInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reviews?: Prisma.ReviewCreateNestedManyWithoutProfileInput
+  reviewComments?: Prisma.ReviewCommentCreateNestedManyWithoutProfileInput
+  reviewVotes?: Prisma.ReviewVoteCreateNestedManyWithoutProfileInput
   savedGameItems?: Prisma.SavedGameItemCreateNestedManyWithoutProfileInput
   playLaterItems?: Prisma.PlayLaterItemCreateNestedManyWithoutProfileInput
   installedGameItems?: Prisma.InstalledGameItemCreateNestedManyWithoutProfileInput
@@ -938,6 +1206,8 @@ export type ProfileUncheckedCreateWithoutFriendshipsAsUserAInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutProfileInput
+  reviewComments?: Prisma.ReviewCommentUncheckedCreateNestedManyWithoutProfileInput
+  reviewVotes?: Prisma.ReviewVoteUncheckedCreateNestedManyWithoutProfileInput
   savedGameItems?: Prisma.SavedGameItemUncheckedCreateNestedManyWithoutProfileInput
   playLaterItems?: Prisma.PlayLaterItemUncheckedCreateNestedManyWithoutProfileInput
   installedGameItems?: Prisma.InstalledGameItemUncheckedCreateNestedManyWithoutProfileInput
@@ -961,6 +1231,8 @@ export type ProfileCreateWithoutFriendshipsAsUserBInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reviews?: Prisma.ReviewCreateNestedManyWithoutProfileInput
+  reviewComments?: Prisma.ReviewCommentCreateNestedManyWithoutProfileInput
+  reviewVotes?: Prisma.ReviewVoteCreateNestedManyWithoutProfileInput
   savedGameItems?: Prisma.SavedGameItemCreateNestedManyWithoutProfileInput
   playLaterItems?: Prisma.PlayLaterItemCreateNestedManyWithoutProfileInput
   installedGameItems?: Prisma.InstalledGameItemCreateNestedManyWithoutProfileInput
@@ -979,6 +1251,8 @@ export type ProfileUncheckedCreateWithoutFriendshipsAsUserBInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutProfileInput
+  reviewComments?: Prisma.ReviewCommentUncheckedCreateNestedManyWithoutProfileInput
+  reviewVotes?: Prisma.ReviewVoteUncheckedCreateNestedManyWithoutProfileInput
   savedGameItems?: Prisma.SavedGameItemUncheckedCreateNestedManyWithoutProfileInput
   playLaterItems?: Prisma.PlayLaterItemUncheckedCreateNestedManyWithoutProfileInput
   installedGameItems?: Prisma.InstalledGameItemUncheckedCreateNestedManyWithoutProfileInput
@@ -1002,6 +1276,8 @@ export type ProfileCreateWithoutFriendshipRequestsSentInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reviews?: Prisma.ReviewCreateNestedManyWithoutProfileInput
+  reviewComments?: Prisma.ReviewCommentCreateNestedManyWithoutProfileInput
+  reviewVotes?: Prisma.ReviewVoteCreateNestedManyWithoutProfileInput
   savedGameItems?: Prisma.SavedGameItemCreateNestedManyWithoutProfileInput
   playLaterItems?: Prisma.PlayLaterItemCreateNestedManyWithoutProfileInput
   installedGameItems?: Prisma.InstalledGameItemCreateNestedManyWithoutProfileInput
@@ -1020,6 +1296,8 @@ export type ProfileUncheckedCreateWithoutFriendshipRequestsSentInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutProfileInput
+  reviewComments?: Prisma.ReviewCommentUncheckedCreateNestedManyWithoutProfileInput
+  reviewVotes?: Prisma.ReviewVoteUncheckedCreateNestedManyWithoutProfileInput
   savedGameItems?: Prisma.SavedGameItemUncheckedCreateNestedManyWithoutProfileInput
   playLaterItems?: Prisma.PlayLaterItemUncheckedCreateNestedManyWithoutProfileInput
   installedGameItems?: Prisma.InstalledGameItemUncheckedCreateNestedManyWithoutProfileInput
@@ -1054,6 +1332,8 @@ export type ProfileUpdateWithoutFriendshipsAsUserAInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviews?: Prisma.ReviewUpdateManyWithoutProfileNestedInput
+  reviewComments?: Prisma.ReviewCommentUpdateManyWithoutProfileNestedInput
+  reviewVotes?: Prisma.ReviewVoteUpdateManyWithoutProfileNestedInput
   savedGameItems?: Prisma.SavedGameItemUpdateManyWithoutProfileNestedInput
   playLaterItems?: Prisma.PlayLaterItemUpdateManyWithoutProfileNestedInput
   installedGameItems?: Prisma.InstalledGameItemUpdateManyWithoutProfileNestedInput
@@ -1072,6 +1352,8 @@ export type ProfileUncheckedUpdateWithoutFriendshipsAsUserAInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutProfileNestedInput
+  reviewComments?: Prisma.ReviewCommentUncheckedUpdateManyWithoutProfileNestedInput
+  reviewVotes?: Prisma.ReviewVoteUncheckedUpdateManyWithoutProfileNestedInput
   savedGameItems?: Prisma.SavedGameItemUncheckedUpdateManyWithoutProfileNestedInput
   playLaterItems?: Prisma.PlayLaterItemUncheckedUpdateManyWithoutProfileNestedInput
   installedGameItems?: Prisma.InstalledGameItemUncheckedUpdateManyWithoutProfileNestedInput
@@ -1101,6 +1383,8 @@ export type ProfileUpdateWithoutFriendshipsAsUserBInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviews?: Prisma.ReviewUpdateManyWithoutProfileNestedInput
+  reviewComments?: Prisma.ReviewCommentUpdateManyWithoutProfileNestedInput
+  reviewVotes?: Prisma.ReviewVoteUpdateManyWithoutProfileNestedInput
   savedGameItems?: Prisma.SavedGameItemUpdateManyWithoutProfileNestedInput
   playLaterItems?: Prisma.PlayLaterItemUpdateManyWithoutProfileNestedInput
   installedGameItems?: Prisma.InstalledGameItemUpdateManyWithoutProfileNestedInput
@@ -1119,6 +1403,8 @@ export type ProfileUncheckedUpdateWithoutFriendshipsAsUserBInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutProfileNestedInput
+  reviewComments?: Prisma.ReviewCommentUncheckedUpdateManyWithoutProfileNestedInput
+  reviewVotes?: Prisma.ReviewVoteUncheckedUpdateManyWithoutProfileNestedInput
   savedGameItems?: Prisma.SavedGameItemUncheckedUpdateManyWithoutProfileNestedInput
   playLaterItems?: Prisma.PlayLaterItemUncheckedUpdateManyWithoutProfileNestedInput
   installedGameItems?: Prisma.InstalledGameItemUncheckedUpdateManyWithoutProfileNestedInput
@@ -1148,6 +1434,8 @@ export type ProfileUpdateWithoutFriendshipRequestsSentInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviews?: Prisma.ReviewUpdateManyWithoutProfileNestedInput
+  reviewComments?: Prisma.ReviewCommentUpdateManyWithoutProfileNestedInput
+  reviewVotes?: Prisma.ReviewVoteUpdateManyWithoutProfileNestedInput
   savedGameItems?: Prisma.SavedGameItemUpdateManyWithoutProfileNestedInput
   playLaterItems?: Prisma.PlayLaterItemUpdateManyWithoutProfileNestedInput
   installedGameItems?: Prisma.InstalledGameItemUpdateManyWithoutProfileNestedInput
@@ -1166,6 +1454,8 @@ export type ProfileUncheckedUpdateWithoutFriendshipRequestsSentInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutProfileNestedInput
+  reviewComments?: Prisma.ReviewCommentUncheckedUpdateManyWithoutProfileNestedInput
+  reviewVotes?: Prisma.ReviewVoteUncheckedUpdateManyWithoutProfileNestedInput
   savedGameItems?: Prisma.SavedGameItemUncheckedUpdateManyWithoutProfileNestedInput
   playLaterItems?: Prisma.PlayLaterItemUncheckedUpdateManyWithoutProfileNestedInput
   installedGameItems?: Prisma.InstalledGameItemUncheckedUpdateManyWithoutProfileNestedInput
@@ -1180,6 +1470,8 @@ export type ProfileUncheckedUpdateWithoutFriendshipRequestsSentInput = {
 
 export type ProfileCountOutputType = {
   reviews: number
+  reviewComments: number
+  reviewVotes: number
   savedGameItems: number
   playLaterItems: number
   installedGameItems: number
@@ -1190,6 +1482,8 @@ export type ProfileCountOutputType = {
 
 export type ProfileCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   reviews?: boolean | ProfileCountOutputTypeCountReviewsArgs
+  reviewComments?: boolean | ProfileCountOutputTypeCountReviewCommentsArgs
+  reviewVotes?: boolean | ProfileCountOutputTypeCountReviewVotesArgs
   savedGameItems?: boolean | ProfileCountOutputTypeCountSavedGameItemsArgs
   playLaterItems?: boolean | ProfileCountOutputTypeCountPlayLaterItemsArgs
   installedGameItems?: boolean | ProfileCountOutputTypeCountInstalledGameItemsArgs
@@ -1213,6 +1507,20 @@ export type ProfileCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exte
  */
 export type ProfileCountOutputTypeCountReviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ReviewWhereInput
+}
+
+/**
+ * ProfileCountOutputType without action
+ */
+export type ProfileCountOutputTypeCountReviewCommentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ReviewCommentWhereInput
+}
+
+/**
+ * ProfileCountOutputType without action
+ */
+export type ProfileCountOutputTypeCountReviewVotesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ReviewVoteWhereInput
 }
 
 /**
@@ -1269,6 +1577,8 @@ export type ProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   createdAt?: boolean
   updatedAt?: boolean
   reviews?: boolean | Prisma.Profile$reviewsArgs<ExtArgs>
+  reviewComments?: boolean | Prisma.Profile$reviewCommentsArgs<ExtArgs>
+  reviewVotes?: boolean | Prisma.Profile$reviewVotesArgs<ExtArgs>
   savedGameItems?: boolean | Prisma.Profile$savedGameItemsArgs<ExtArgs>
   playLaterItems?: boolean | Prisma.Profile$playLaterItemsArgs<ExtArgs>
   installedGameItems?: boolean | Prisma.Profile$installedGameItemsArgs<ExtArgs>
@@ -1317,6 +1627,8 @@ export type ProfileSelectScalar = {
 export type ProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "authUserId" | "email" | "username" | "displayName" | "avatarUrl" | "bio" | "createdAt" | "updatedAt", ExtArgs["result"]["profile"]>
 export type ProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   reviews?: boolean | Prisma.Profile$reviewsArgs<ExtArgs>
+  reviewComments?: boolean | Prisma.Profile$reviewCommentsArgs<ExtArgs>
+  reviewVotes?: boolean | Prisma.Profile$reviewVotesArgs<ExtArgs>
   savedGameItems?: boolean | Prisma.Profile$savedGameItemsArgs<ExtArgs>
   playLaterItems?: boolean | Prisma.Profile$playLaterItemsArgs<ExtArgs>
   installedGameItems?: boolean | Prisma.Profile$installedGameItemsArgs<ExtArgs>
@@ -1332,6 +1644,8 @@ export type $ProfilePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   name: "Profile"
   objects: {
     reviews: Prisma.$ReviewPayload<ExtArgs>[]
+    reviewComments: Prisma.$ReviewCommentPayload<ExtArgs>[]
+    reviewVotes: Prisma.$ReviewVotePayload<ExtArgs>[]
     savedGameItems: Prisma.$SavedGameItemPayload<ExtArgs>[]
     playLaterItems: Prisma.$PlayLaterItemPayload<ExtArgs>[]
     installedGameItems: Prisma.$InstalledGameItemPayload<ExtArgs>[]
@@ -1744,6 +2058,8 @@ readonly fields: ProfileFieldRefs;
 export interface Prisma__ProfileClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   reviews<T extends Prisma.Profile$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  reviewComments<T extends Prisma.Profile$reviewCommentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$reviewCommentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  reviewVotes<T extends Prisma.Profile$reviewVotesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$reviewVotesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewVotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   savedGameItems<T extends Prisma.Profile$savedGameItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$savedGameItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SavedGameItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   playLaterItems<T extends Prisma.Profile$playLaterItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$playLaterItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PlayLaterItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   installedGameItems<T extends Prisma.Profile$installedGameItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$installedGameItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InstalledGameItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2202,6 +2518,54 @@ export type Profile$reviewsArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.ReviewScalarFieldEnum | Prisma.ReviewScalarFieldEnum[]
+}
+
+/**
+ * Profile.reviewComments
+ */
+export type Profile$reviewCommentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ReviewComment
+   */
+  select?: Prisma.ReviewCommentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ReviewComment
+   */
+  omit?: Prisma.ReviewCommentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ReviewCommentInclude<ExtArgs> | null
+  where?: Prisma.ReviewCommentWhereInput
+  orderBy?: Prisma.ReviewCommentOrderByWithRelationInput | Prisma.ReviewCommentOrderByWithRelationInput[]
+  cursor?: Prisma.ReviewCommentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ReviewCommentScalarFieldEnum | Prisma.ReviewCommentScalarFieldEnum[]
+}
+
+/**
+ * Profile.reviewVotes
+ */
+export type Profile$reviewVotesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ReviewVote
+   */
+  select?: Prisma.ReviewVoteSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ReviewVote
+   */
+  omit?: Prisma.ReviewVoteOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ReviewVoteInclude<ExtArgs> | null
+  where?: Prisma.ReviewVoteWhereInput
+  orderBy?: Prisma.ReviewVoteOrderByWithRelationInput | Prisma.ReviewVoteOrderByWithRelationInput[]
+  cursor?: Prisma.ReviewVoteWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ReviewVoteScalarFieldEnum | Prisma.ReviewVoteScalarFieldEnum[]
 }
 
 /**

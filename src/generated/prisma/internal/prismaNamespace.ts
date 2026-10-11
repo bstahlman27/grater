@@ -400,6 +400,8 @@ export const ModelName = {
   Profile: 'Profile',
   Game: 'Game',
   SavedGameItem: 'SavedGameItem',
+  ReviewComment: 'ReviewComment',
+  ReviewVote: 'ReviewVote',
   Review: 'Review',
   PlayLaterItem: 'PlayLaterItem',
   InstalledGameItem: 'InstalledGameItem',
@@ -419,7 +421,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "profile" | "game" | "savedGameItem" | "review" | "playLaterItem" | "installedGameItem" | "friendship"
+    modelProps: "profile" | "game" | "savedGameItem" | "reviewComment" | "reviewVote" | "review" | "playLaterItem" | "installedGameItem" | "friendship"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -642,6 +644,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.SavedGameItemCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.SavedGameItemCountAggregateOutputType> | number
+        }
+      }
+    }
+    ReviewComment: {
+      payload: Prisma.$ReviewCommentPayload<ExtArgs>
+      fields: Prisma.ReviewCommentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ReviewCommentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewCommentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ReviewCommentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewCommentPayload>
+        }
+        findFirst: {
+          args: Prisma.ReviewCommentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewCommentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ReviewCommentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewCommentPayload>
+        }
+        findMany: {
+          args: Prisma.ReviewCommentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewCommentPayload>[]
+        }
+        create: {
+          args: Prisma.ReviewCommentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewCommentPayload>
+        }
+        createMany: {
+          args: Prisma.ReviewCommentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ReviewCommentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewCommentPayload>[]
+        }
+        delete: {
+          args: Prisma.ReviewCommentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewCommentPayload>
+        }
+        update: {
+          args: Prisma.ReviewCommentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewCommentPayload>
+        }
+        deleteMany: {
+          args: Prisma.ReviewCommentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ReviewCommentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ReviewCommentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewCommentPayload>[]
+        }
+        upsert: {
+          args: Prisma.ReviewCommentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewCommentPayload>
+        }
+        aggregate: {
+          args: Prisma.ReviewCommentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateReviewComment>
+        }
+        groupBy: {
+          args: Prisma.ReviewCommentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ReviewCommentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ReviewCommentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ReviewCommentCountAggregateOutputType> | number
+        }
+      }
+    }
+    ReviewVote: {
+      payload: Prisma.$ReviewVotePayload<ExtArgs>
+      fields: Prisma.ReviewVoteFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ReviewVoteFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewVotePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ReviewVoteFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewVotePayload>
+        }
+        findFirst: {
+          args: Prisma.ReviewVoteFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewVotePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ReviewVoteFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewVotePayload>
+        }
+        findMany: {
+          args: Prisma.ReviewVoteFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewVotePayload>[]
+        }
+        create: {
+          args: Prisma.ReviewVoteCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewVotePayload>
+        }
+        createMany: {
+          args: Prisma.ReviewVoteCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ReviewVoteCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewVotePayload>[]
+        }
+        delete: {
+          args: Prisma.ReviewVoteDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewVotePayload>
+        }
+        update: {
+          args: Prisma.ReviewVoteUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewVotePayload>
+        }
+        deleteMany: {
+          args: Prisma.ReviewVoteDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ReviewVoteUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ReviewVoteUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewVotePayload>[]
+        }
+        upsert: {
+          args: Prisma.ReviewVoteUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReviewVotePayload>
+        }
+        aggregate: {
+          args: Prisma.ReviewVoteAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateReviewVote>
+        }
+        groupBy: {
+          args: Prisma.ReviewVoteGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ReviewVoteGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ReviewVoteCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ReviewVoteCountAggregateOutputType> | number
         }
       }
     }
@@ -1024,6 +1174,30 @@ export const SavedGameItemScalarFieldEnum = {
 export type SavedGameItemScalarFieldEnum = (typeof SavedGameItemScalarFieldEnum)[keyof typeof SavedGameItemScalarFieldEnum]
 
 
+export const ReviewCommentScalarFieldEnum = {
+  id: 'id',
+  reviewId: 'reviewId',
+  profileId: 'profileId',
+  body: 'body',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ReviewCommentScalarFieldEnum = (typeof ReviewCommentScalarFieldEnum)[keyof typeof ReviewCommentScalarFieldEnum]
+
+
+export const ReviewVoteScalarFieldEnum = {
+  id: 'id',
+  reviewId: 'reviewId',
+  profileId: 'profileId',
+  value: 'value',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ReviewVoteScalarFieldEnum = (typeof ReviewVoteScalarFieldEnum)[keyof typeof ReviewVoteScalarFieldEnum]
+
+
 export const ReviewScalarFieldEnum = {
   id: 'id',
   profileId: 'profileId',
@@ -1032,6 +1206,7 @@ export const ReviewScalarFieldEnum = {
   body: 'body',
   containsSpoilers: 'containsSpoilers',
   visibility: 'visibility',
+  pinned: 'pinned',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1160,6 +1335,20 @@ export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, '
  * Reference to a field of type 'Float[]'
  */
 export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ReviewVoteValue'
+ */
+export type EnumReviewVoteValueFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReviewVoteValue'>
+    
+
+
+/**
+ * Reference to a field of type 'ReviewVoteValue[]'
+ */
+export type ListEnumReviewVoteValueFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReviewVoteValue[]'>
     
 
 
@@ -1351,6 +1540,8 @@ export type GlobalOmitConfig = {
   profile?: Prisma.ProfileOmit
   game?: Prisma.GameOmit
   savedGameItem?: Prisma.SavedGameItemOmit
+  reviewComment?: Prisma.ReviewCommentOmit
+  reviewVote?: Prisma.ReviewVoteOmit
   review?: Prisma.ReviewOmit
   playLaterItem?: Prisma.PlayLaterItemOmit
   installedGameItem?: Prisma.InstalledGameItemOmit

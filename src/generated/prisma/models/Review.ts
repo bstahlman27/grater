@@ -42,6 +42,7 @@ export type ReviewMinAggregateOutputType = {
   body: string | null
   containsSpoilers: boolean | null
   visibility: $Enums.Visibility | null
+  pinned: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -54,6 +55,7 @@ export type ReviewMaxAggregateOutputType = {
   body: string | null
   containsSpoilers: boolean | null
   visibility: $Enums.Visibility | null
+  pinned: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -66,6 +68,7 @@ export type ReviewCountAggregateOutputType = {
   body: number
   containsSpoilers: number
   visibility: number
+  pinned: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -88,6 +91,7 @@ export type ReviewMinAggregateInputType = {
   body?: true
   containsSpoilers?: true
   visibility?: true
+  pinned?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -100,6 +104,7 @@ export type ReviewMaxAggregateInputType = {
   body?: true
   containsSpoilers?: true
   visibility?: true
+  pinned?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -112,6 +117,7 @@ export type ReviewCountAggregateInputType = {
   body?: true
   containsSpoilers?: true
   visibility?: true
+  pinned?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -211,6 +217,7 @@ export type ReviewGroupByOutputType = {
   body: string | null
   containsSpoilers: boolean
   visibility: $Enums.Visibility
+  pinned: boolean
   createdAt: Date
   updatedAt: Date
   _count: ReviewCountAggregateOutputType | null
@@ -246,10 +253,13 @@ export type ReviewWhereInput = {
   body?: Prisma.StringNullableFilter<"Review"> | string | null
   containsSpoilers?: Prisma.BoolFilter<"Review"> | boolean
   visibility?: Prisma.EnumVisibilityFilter<"Review"> | $Enums.Visibility
+  pinned?: Prisma.BoolFilter<"Review"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Review"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Review"> | Date | string
   profile?: Prisma.XOR<Prisma.ProfileScalarRelationFilter, Prisma.ProfileWhereInput>
   game?: Prisma.XOR<Prisma.GameScalarRelationFilter, Prisma.GameWhereInput>
+  comments?: Prisma.ReviewCommentListRelationFilter
+  votes?: Prisma.ReviewVoteListRelationFilter
 }
 
 export type ReviewOrderByWithRelationInput = {
@@ -260,10 +270,13 @@ export type ReviewOrderByWithRelationInput = {
   body?: Prisma.SortOrderInput | Prisma.SortOrder
   containsSpoilers?: Prisma.SortOrder
   visibility?: Prisma.SortOrder
+  pinned?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   profile?: Prisma.ProfileOrderByWithRelationInput
   game?: Prisma.GameOrderByWithRelationInput
+  comments?: Prisma.ReviewCommentOrderByRelationAggregateInput
+  votes?: Prisma.ReviewVoteOrderByRelationAggregateInput
 }
 
 export type ReviewWhereUniqueInput = Prisma.AtLeast<{
@@ -278,10 +291,13 @@ export type ReviewWhereUniqueInput = Prisma.AtLeast<{
   body?: Prisma.StringNullableFilter<"Review"> | string | null
   containsSpoilers?: Prisma.BoolFilter<"Review"> | boolean
   visibility?: Prisma.EnumVisibilityFilter<"Review"> | $Enums.Visibility
+  pinned?: Prisma.BoolFilter<"Review"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Review"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Review"> | Date | string
   profile?: Prisma.XOR<Prisma.ProfileScalarRelationFilter, Prisma.ProfileWhereInput>
   game?: Prisma.XOR<Prisma.GameScalarRelationFilter, Prisma.GameWhereInput>
+  comments?: Prisma.ReviewCommentListRelationFilter
+  votes?: Prisma.ReviewVoteListRelationFilter
 }, "id" | "profileId_gameId">
 
 export type ReviewOrderByWithAggregationInput = {
@@ -292,6 +308,7 @@ export type ReviewOrderByWithAggregationInput = {
   body?: Prisma.SortOrderInput | Prisma.SortOrder
   containsSpoilers?: Prisma.SortOrder
   visibility?: Prisma.SortOrder
+  pinned?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ReviewCountOrderByAggregateInput
@@ -312,6 +329,7 @@ export type ReviewScalarWhereWithAggregatesInput = {
   body?: Prisma.StringNullableWithAggregatesFilter<"Review"> | string | null
   containsSpoilers?: Prisma.BoolWithAggregatesFilter<"Review"> | boolean
   visibility?: Prisma.EnumVisibilityWithAggregatesFilter<"Review"> | $Enums.Visibility
+  pinned?: Prisma.BoolWithAggregatesFilter<"Review"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Review"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Review"> | Date | string
 }
@@ -322,10 +340,13 @@ export type ReviewCreateInput = {
   body?: string | null
   containsSpoilers?: boolean
   visibility?: $Enums.Visibility
+  pinned?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   profile: Prisma.ProfileCreateNestedOneWithoutReviewsInput
   game: Prisma.GameCreateNestedOneWithoutReviewsInput
+  comments?: Prisma.ReviewCommentCreateNestedManyWithoutReviewInput
+  votes?: Prisma.ReviewVoteCreateNestedManyWithoutReviewInput
 }
 
 export type ReviewUncheckedCreateInput = {
@@ -336,8 +357,11 @@ export type ReviewUncheckedCreateInput = {
   body?: string | null
   containsSpoilers?: boolean
   visibility?: $Enums.Visibility
+  pinned?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  comments?: Prisma.ReviewCommentUncheckedCreateNestedManyWithoutReviewInput
+  votes?: Prisma.ReviewVoteUncheckedCreateNestedManyWithoutReviewInput
 }
 
 export type ReviewUpdateInput = {
@@ -346,10 +370,13 @@ export type ReviewUpdateInput = {
   body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   containsSpoilers?: Prisma.BoolFieldUpdateOperationsInput | boolean
   visibility?: Prisma.EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+  pinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profile?: Prisma.ProfileUpdateOneRequiredWithoutReviewsNestedInput
   game?: Prisma.GameUpdateOneRequiredWithoutReviewsNestedInput
+  comments?: Prisma.ReviewCommentUpdateManyWithoutReviewNestedInput
+  votes?: Prisma.ReviewVoteUpdateManyWithoutReviewNestedInput
 }
 
 export type ReviewUncheckedUpdateInput = {
@@ -360,8 +387,11 @@ export type ReviewUncheckedUpdateInput = {
   body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   containsSpoilers?: Prisma.BoolFieldUpdateOperationsInput | boolean
   visibility?: Prisma.EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+  pinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  comments?: Prisma.ReviewCommentUncheckedUpdateManyWithoutReviewNestedInput
+  votes?: Prisma.ReviewVoteUncheckedUpdateManyWithoutReviewNestedInput
 }
 
 export type ReviewCreateManyInput = {
@@ -372,6 +402,7 @@ export type ReviewCreateManyInput = {
   body?: string | null
   containsSpoilers?: boolean
   visibility?: $Enums.Visibility
+  pinned?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -382,6 +413,7 @@ export type ReviewUpdateManyMutationInput = {
   body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   containsSpoilers?: Prisma.BoolFieldUpdateOperationsInput | boolean
   visibility?: Prisma.EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+  pinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -394,6 +426,7 @@ export type ReviewUncheckedUpdateManyInput = {
   body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   containsSpoilers?: Prisma.BoolFieldUpdateOperationsInput | boolean
   visibility?: Prisma.EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+  pinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -406,6 +439,11 @@ export type ReviewListRelationFilter = {
 
 export type ReviewOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type ReviewScalarRelationFilter = {
+  is?: Prisma.ReviewWhereInput
+  isNot?: Prisma.ReviewWhereInput
 }
 
 export type ReviewProfileIdGameIdCompoundUniqueInput = {
@@ -421,6 +459,7 @@ export type ReviewCountOrderByAggregateInput = {
   body?: Prisma.SortOrder
   containsSpoilers?: Prisma.SortOrder
   visibility?: Prisma.SortOrder
+  pinned?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -437,6 +476,7 @@ export type ReviewMaxOrderByAggregateInput = {
   body?: Prisma.SortOrder
   containsSpoilers?: Prisma.SortOrder
   visibility?: Prisma.SortOrder
+  pinned?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -449,6 +489,7 @@ export type ReviewMinOrderByAggregateInput = {
   body?: Prisma.SortOrder
   containsSpoilers?: Prisma.SortOrder
   visibility?: Prisma.SortOrder
+  pinned?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -541,6 +582,34 @@ export type ReviewUncheckedUpdateManyWithoutGameNestedInput = {
   deleteMany?: Prisma.ReviewScalarWhereInput | Prisma.ReviewScalarWhereInput[]
 }
 
+export type ReviewCreateNestedOneWithoutCommentsInput = {
+  create?: Prisma.XOR<Prisma.ReviewCreateWithoutCommentsInput, Prisma.ReviewUncheckedCreateWithoutCommentsInput>
+  connectOrCreate?: Prisma.ReviewCreateOrConnectWithoutCommentsInput
+  connect?: Prisma.ReviewWhereUniqueInput
+}
+
+export type ReviewUpdateOneRequiredWithoutCommentsNestedInput = {
+  create?: Prisma.XOR<Prisma.ReviewCreateWithoutCommentsInput, Prisma.ReviewUncheckedCreateWithoutCommentsInput>
+  connectOrCreate?: Prisma.ReviewCreateOrConnectWithoutCommentsInput
+  upsert?: Prisma.ReviewUpsertWithoutCommentsInput
+  connect?: Prisma.ReviewWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ReviewUpdateToOneWithWhereWithoutCommentsInput, Prisma.ReviewUpdateWithoutCommentsInput>, Prisma.ReviewUncheckedUpdateWithoutCommentsInput>
+}
+
+export type ReviewCreateNestedOneWithoutVotesInput = {
+  create?: Prisma.XOR<Prisma.ReviewCreateWithoutVotesInput, Prisma.ReviewUncheckedCreateWithoutVotesInput>
+  connectOrCreate?: Prisma.ReviewCreateOrConnectWithoutVotesInput
+  connect?: Prisma.ReviewWhereUniqueInput
+}
+
+export type ReviewUpdateOneRequiredWithoutVotesNestedInput = {
+  create?: Prisma.XOR<Prisma.ReviewCreateWithoutVotesInput, Prisma.ReviewUncheckedCreateWithoutVotesInput>
+  connectOrCreate?: Prisma.ReviewCreateOrConnectWithoutVotesInput
+  upsert?: Prisma.ReviewUpsertWithoutVotesInput
+  connect?: Prisma.ReviewWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ReviewUpdateToOneWithWhereWithoutVotesInput, Prisma.ReviewUpdateWithoutVotesInput>, Prisma.ReviewUncheckedUpdateWithoutVotesInput>
+}
+
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
@@ -555,9 +624,12 @@ export type ReviewCreateWithoutProfileInput = {
   body?: string | null
   containsSpoilers?: boolean
   visibility?: $Enums.Visibility
+  pinned?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   game: Prisma.GameCreateNestedOneWithoutReviewsInput
+  comments?: Prisma.ReviewCommentCreateNestedManyWithoutReviewInput
+  votes?: Prisma.ReviewVoteCreateNestedManyWithoutReviewInput
 }
 
 export type ReviewUncheckedCreateWithoutProfileInput = {
@@ -567,8 +639,11 @@ export type ReviewUncheckedCreateWithoutProfileInput = {
   body?: string | null
   containsSpoilers?: boolean
   visibility?: $Enums.Visibility
+  pinned?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  comments?: Prisma.ReviewCommentUncheckedCreateNestedManyWithoutReviewInput
+  votes?: Prisma.ReviewVoteUncheckedCreateNestedManyWithoutReviewInput
 }
 
 export type ReviewCreateOrConnectWithoutProfileInput = {
@@ -608,6 +683,7 @@ export type ReviewScalarWhereInput = {
   body?: Prisma.StringNullableFilter<"Review"> | string | null
   containsSpoilers?: Prisma.BoolFilter<"Review"> | boolean
   visibility?: Prisma.EnumVisibilityFilter<"Review"> | $Enums.Visibility
+  pinned?: Prisma.BoolFilter<"Review"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Review"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Review"> | Date | string
 }
@@ -618,9 +694,12 @@ export type ReviewCreateWithoutGameInput = {
   body?: string | null
   containsSpoilers?: boolean
   visibility?: $Enums.Visibility
+  pinned?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   profile: Prisma.ProfileCreateNestedOneWithoutReviewsInput
+  comments?: Prisma.ReviewCommentCreateNestedManyWithoutReviewInput
+  votes?: Prisma.ReviewVoteCreateNestedManyWithoutReviewInput
 }
 
 export type ReviewUncheckedCreateWithoutGameInput = {
@@ -630,8 +709,11 @@ export type ReviewUncheckedCreateWithoutGameInput = {
   body?: string | null
   containsSpoilers?: boolean
   visibility?: $Enums.Visibility
+  pinned?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  comments?: Prisma.ReviewCommentUncheckedCreateNestedManyWithoutReviewInput
+  votes?: Prisma.ReviewVoteUncheckedCreateNestedManyWithoutReviewInput
 }
 
 export type ReviewCreateOrConnectWithoutGameInput = {
@@ -660,6 +742,150 @@ export type ReviewUpdateManyWithWhereWithoutGameInput = {
   data: Prisma.XOR<Prisma.ReviewUpdateManyMutationInput, Prisma.ReviewUncheckedUpdateManyWithoutGameInput>
 }
 
+export type ReviewCreateWithoutCommentsInput = {
+  id?: string
+  rating: number
+  body?: string | null
+  containsSpoilers?: boolean
+  visibility?: $Enums.Visibility
+  pinned?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile: Prisma.ProfileCreateNestedOneWithoutReviewsInput
+  game: Prisma.GameCreateNestedOneWithoutReviewsInput
+  votes?: Prisma.ReviewVoteCreateNestedManyWithoutReviewInput
+}
+
+export type ReviewUncheckedCreateWithoutCommentsInput = {
+  id?: string
+  profileId: string
+  gameId: string
+  rating: number
+  body?: string | null
+  containsSpoilers?: boolean
+  visibility?: $Enums.Visibility
+  pinned?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  votes?: Prisma.ReviewVoteUncheckedCreateNestedManyWithoutReviewInput
+}
+
+export type ReviewCreateOrConnectWithoutCommentsInput = {
+  where: Prisma.ReviewWhereUniqueInput
+  create: Prisma.XOR<Prisma.ReviewCreateWithoutCommentsInput, Prisma.ReviewUncheckedCreateWithoutCommentsInput>
+}
+
+export type ReviewUpsertWithoutCommentsInput = {
+  update: Prisma.XOR<Prisma.ReviewUpdateWithoutCommentsInput, Prisma.ReviewUncheckedUpdateWithoutCommentsInput>
+  create: Prisma.XOR<Prisma.ReviewCreateWithoutCommentsInput, Prisma.ReviewUncheckedCreateWithoutCommentsInput>
+  where?: Prisma.ReviewWhereInput
+}
+
+export type ReviewUpdateToOneWithWhereWithoutCommentsInput = {
+  where?: Prisma.ReviewWhereInput
+  data: Prisma.XOR<Prisma.ReviewUpdateWithoutCommentsInput, Prisma.ReviewUncheckedUpdateWithoutCommentsInput>
+}
+
+export type ReviewUpdateWithoutCommentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  rating?: Prisma.IntFieldUpdateOperationsInput | number
+  body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  containsSpoilers?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  visibility?: Prisma.EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+  pinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.ProfileUpdateOneRequiredWithoutReviewsNestedInput
+  game?: Prisma.GameUpdateOneRequiredWithoutReviewsNestedInput
+  votes?: Prisma.ReviewVoteUpdateManyWithoutReviewNestedInput
+}
+
+export type ReviewUncheckedUpdateWithoutCommentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  profileId?: Prisma.StringFieldUpdateOperationsInput | string
+  gameId?: Prisma.StringFieldUpdateOperationsInput | string
+  rating?: Prisma.IntFieldUpdateOperationsInput | number
+  body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  containsSpoilers?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  visibility?: Prisma.EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+  pinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  votes?: Prisma.ReviewVoteUncheckedUpdateManyWithoutReviewNestedInput
+}
+
+export type ReviewCreateWithoutVotesInput = {
+  id?: string
+  rating: number
+  body?: string | null
+  containsSpoilers?: boolean
+  visibility?: $Enums.Visibility
+  pinned?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  profile: Prisma.ProfileCreateNestedOneWithoutReviewsInput
+  game: Prisma.GameCreateNestedOneWithoutReviewsInput
+  comments?: Prisma.ReviewCommentCreateNestedManyWithoutReviewInput
+}
+
+export type ReviewUncheckedCreateWithoutVotesInput = {
+  id?: string
+  profileId: string
+  gameId: string
+  rating: number
+  body?: string | null
+  containsSpoilers?: boolean
+  visibility?: $Enums.Visibility
+  pinned?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  comments?: Prisma.ReviewCommentUncheckedCreateNestedManyWithoutReviewInput
+}
+
+export type ReviewCreateOrConnectWithoutVotesInput = {
+  where: Prisma.ReviewWhereUniqueInput
+  create: Prisma.XOR<Prisma.ReviewCreateWithoutVotesInput, Prisma.ReviewUncheckedCreateWithoutVotesInput>
+}
+
+export type ReviewUpsertWithoutVotesInput = {
+  update: Prisma.XOR<Prisma.ReviewUpdateWithoutVotesInput, Prisma.ReviewUncheckedUpdateWithoutVotesInput>
+  create: Prisma.XOR<Prisma.ReviewCreateWithoutVotesInput, Prisma.ReviewUncheckedCreateWithoutVotesInput>
+  where?: Prisma.ReviewWhereInput
+}
+
+export type ReviewUpdateToOneWithWhereWithoutVotesInput = {
+  where?: Prisma.ReviewWhereInput
+  data: Prisma.XOR<Prisma.ReviewUpdateWithoutVotesInput, Prisma.ReviewUncheckedUpdateWithoutVotesInput>
+}
+
+export type ReviewUpdateWithoutVotesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  rating?: Prisma.IntFieldUpdateOperationsInput | number
+  body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  containsSpoilers?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  visibility?: Prisma.EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+  pinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  profile?: Prisma.ProfileUpdateOneRequiredWithoutReviewsNestedInput
+  game?: Prisma.GameUpdateOneRequiredWithoutReviewsNestedInput
+  comments?: Prisma.ReviewCommentUpdateManyWithoutReviewNestedInput
+}
+
+export type ReviewUncheckedUpdateWithoutVotesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  profileId?: Prisma.StringFieldUpdateOperationsInput | string
+  gameId?: Prisma.StringFieldUpdateOperationsInput | string
+  rating?: Prisma.IntFieldUpdateOperationsInput | number
+  body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  containsSpoilers?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  visibility?: Prisma.EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+  pinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  comments?: Prisma.ReviewCommentUncheckedUpdateManyWithoutReviewNestedInput
+}
+
 export type ReviewCreateManyProfileInput = {
   id?: string
   gameId: string
@@ -667,6 +893,7 @@ export type ReviewCreateManyProfileInput = {
   body?: string | null
   containsSpoilers?: boolean
   visibility?: $Enums.Visibility
+  pinned?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -677,9 +904,12 @@ export type ReviewUpdateWithoutProfileInput = {
   body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   containsSpoilers?: Prisma.BoolFieldUpdateOperationsInput | boolean
   visibility?: Prisma.EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+  pinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   game?: Prisma.GameUpdateOneRequiredWithoutReviewsNestedInput
+  comments?: Prisma.ReviewCommentUpdateManyWithoutReviewNestedInput
+  votes?: Prisma.ReviewVoteUpdateManyWithoutReviewNestedInput
 }
 
 export type ReviewUncheckedUpdateWithoutProfileInput = {
@@ -689,8 +919,11 @@ export type ReviewUncheckedUpdateWithoutProfileInput = {
   body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   containsSpoilers?: Prisma.BoolFieldUpdateOperationsInput | boolean
   visibility?: Prisma.EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+  pinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  comments?: Prisma.ReviewCommentUncheckedUpdateManyWithoutReviewNestedInput
+  votes?: Prisma.ReviewVoteUncheckedUpdateManyWithoutReviewNestedInput
 }
 
 export type ReviewUncheckedUpdateManyWithoutProfileInput = {
@@ -700,6 +933,7 @@ export type ReviewUncheckedUpdateManyWithoutProfileInput = {
   body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   containsSpoilers?: Prisma.BoolFieldUpdateOperationsInput | boolean
   visibility?: Prisma.EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+  pinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -711,6 +945,7 @@ export type ReviewCreateManyGameInput = {
   body?: string | null
   containsSpoilers?: boolean
   visibility?: $Enums.Visibility
+  pinned?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -721,9 +956,12 @@ export type ReviewUpdateWithoutGameInput = {
   body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   containsSpoilers?: Prisma.BoolFieldUpdateOperationsInput | boolean
   visibility?: Prisma.EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+  pinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   profile?: Prisma.ProfileUpdateOneRequiredWithoutReviewsNestedInput
+  comments?: Prisma.ReviewCommentUpdateManyWithoutReviewNestedInput
+  votes?: Prisma.ReviewVoteUpdateManyWithoutReviewNestedInput
 }
 
 export type ReviewUncheckedUpdateWithoutGameInput = {
@@ -733,8 +971,11 @@ export type ReviewUncheckedUpdateWithoutGameInput = {
   body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   containsSpoilers?: Prisma.BoolFieldUpdateOperationsInput | boolean
   visibility?: Prisma.EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+  pinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  comments?: Prisma.ReviewCommentUncheckedUpdateManyWithoutReviewNestedInput
+  votes?: Prisma.ReviewVoteUncheckedUpdateManyWithoutReviewNestedInput
 }
 
 export type ReviewUncheckedUpdateManyWithoutGameInput = {
@@ -744,10 +985,49 @@ export type ReviewUncheckedUpdateManyWithoutGameInput = {
   body?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   containsSpoilers?: Prisma.BoolFieldUpdateOperationsInput | boolean
   visibility?: Prisma.EnumVisibilityFieldUpdateOperationsInput | $Enums.Visibility
+  pinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+
+/**
+ * Count Type ReviewCountOutputType
+ */
+
+export type ReviewCountOutputType = {
+  comments: number
+  votes: number
+}
+
+export type ReviewCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  comments?: boolean | ReviewCountOutputTypeCountCommentsArgs
+  votes?: boolean | ReviewCountOutputTypeCountVotesArgs
+}
+
+/**
+ * ReviewCountOutputType without action
+ */
+export type ReviewCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ReviewCountOutputType
+   */
+  select?: Prisma.ReviewCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ReviewCountOutputType without action
+ */
+export type ReviewCountOutputTypeCountCommentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ReviewCommentWhereInput
+}
+
+/**
+ * ReviewCountOutputType without action
+ */
+export type ReviewCountOutputTypeCountVotesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ReviewVoteWhereInput
+}
 
 
 export type ReviewSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -758,10 +1038,14 @@ export type ReviewSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   body?: boolean
   containsSpoilers?: boolean
   visibility?: boolean
+  pinned?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   profile?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
   game?: boolean | Prisma.GameDefaultArgs<ExtArgs>
+  comments?: boolean | Prisma.Review$commentsArgs<ExtArgs>
+  votes?: boolean | Prisma.Review$votesArgs<ExtArgs>
+  _count?: boolean | Prisma.ReviewCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["review"]>
 
 export type ReviewSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -772,6 +1056,7 @@ export type ReviewSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   body?: boolean
   containsSpoilers?: boolean
   visibility?: boolean
+  pinned?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   profile?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
@@ -786,6 +1071,7 @@ export type ReviewSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   body?: boolean
   containsSpoilers?: boolean
   visibility?: boolean
+  pinned?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   profile?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
@@ -800,14 +1086,18 @@ export type ReviewSelectScalar = {
   body?: boolean
   containsSpoilers?: boolean
   visibility?: boolean
+  pinned?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ReviewOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "profileId" | "gameId" | "rating" | "body" | "containsSpoilers" | "visibility" | "createdAt" | "updatedAt", ExtArgs["result"]["review"]>
+export type ReviewOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "profileId" | "gameId" | "rating" | "body" | "containsSpoilers" | "visibility" | "pinned" | "createdAt" | "updatedAt", ExtArgs["result"]["review"]>
 export type ReviewInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   profile?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
   game?: boolean | Prisma.GameDefaultArgs<ExtArgs>
+  comments?: boolean | Prisma.Review$commentsArgs<ExtArgs>
+  votes?: boolean | Prisma.Review$votesArgs<ExtArgs>
+  _count?: boolean | Prisma.ReviewCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ReviewIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   profile?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
@@ -823,6 +1113,8 @@ export type $ReviewPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   objects: {
     profile: Prisma.$ProfilePayload<ExtArgs>
     game: Prisma.$GamePayload<ExtArgs>
+    comments: Prisma.$ReviewCommentPayload<ExtArgs>[]
+    votes: Prisma.$ReviewVotePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -835,6 +1127,7 @@ export type $ReviewPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     body: string | null
     containsSpoilers: boolean
     visibility: $Enums.Visibility
+    pinned: boolean
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["review"]>
@@ -1233,6 +1526,8 @@ export interface Prisma__ReviewClient<T, Null = never, ExtArgs extends runtime.T
   readonly [Symbol.toStringTag]: "PrismaPromise"
   profile<T extends Prisma.ProfileDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProfileDefaultArgs<ExtArgs>>): Prisma.Prisma__ProfileClient<runtime.Types.Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   game<T extends Prisma.GameDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.GameDefaultArgs<ExtArgs>>): Prisma.Prisma__GameClient<runtime.Types.Result.GetResult<Prisma.$GamePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  comments<T extends Prisma.Review$commentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Review$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  votes<T extends Prisma.Review$votesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Review$votesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewVotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1269,6 +1564,7 @@ export interface ReviewFieldRefs {
   readonly body: Prisma.FieldRef<"Review", 'String'>
   readonly containsSpoilers: Prisma.FieldRef<"Review", 'Boolean'>
   readonly visibility: Prisma.FieldRef<"Review", 'Visibility'>
+  readonly pinned: Prisma.FieldRef<"Review", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Review", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Review", 'DateTime'>
 }
@@ -1669,6 +1965,54 @@ export type ReviewDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Limit how many Reviews to delete.
    */
   limit?: number
+}
+
+/**
+ * Review.comments
+ */
+export type Review$commentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ReviewComment
+   */
+  select?: Prisma.ReviewCommentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ReviewComment
+   */
+  omit?: Prisma.ReviewCommentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ReviewCommentInclude<ExtArgs> | null
+  where?: Prisma.ReviewCommentWhereInput
+  orderBy?: Prisma.ReviewCommentOrderByWithRelationInput | Prisma.ReviewCommentOrderByWithRelationInput[]
+  cursor?: Prisma.ReviewCommentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ReviewCommentScalarFieldEnum | Prisma.ReviewCommentScalarFieldEnum[]
+}
+
+/**
+ * Review.votes
+ */
+export type Review$votesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ReviewVote
+   */
+  select?: Prisma.ReviewVoteSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ReviewVote
+   */
+  omit?: Prisma.ReviewVoteOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ReviewVoteInclude<ExtArgs> | null
+  where?: Prisma.ReviewVoteWhereInput
+  orderBy?: Prisma.ReviewVoteOrderByWithRelationInput | Prisma.ReviewVoteOrderByWithRelationInput[]
+  cursor?: Prisma.ReviewVoteWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ReviewVoteScalarFieldEnum | Prisma.ReviewVoteScalarFieldEnum[]
 }
 
 /**

@@ -1,0 +1,1 @@
+ALTER TABLE "Review" ADD COLUMN "pinned" BOOLEAN NOT NULL DEFAULT false;

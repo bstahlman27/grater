@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { AppHeader } from "@/components/app-header";
+import { ProfileAvatar } from "@/components/profile-avatar";
 import { getFriendsPageData } from "@/data/friends";
 import type { FriendRequestSummary } from "@/types/friends";
 import {
@@ -16,6 +17,19 @@ type FriendsPageProps = {
   }>;
 };
 
+type FriendRowProps = {
+  friend: FriendRequestSummary;
+  primaryAction?: {
+    action: (formData: FormData) => void | Promise<void>;
+    label: string;
+    style: "primary" | "secondary";
+  };
+  secondaryAction?: {
+    action: (formData: FormData) => void | Promise<void>;
+    label: string;
+  };
+};
+
 export const dynamic = "force-dynamic";
 
 function getSearchValue(value: string | string[] | undefined) {
@@ -26,33 +40,67 @@ function getSearchValue(value: string | string[] | undefined) {
   return value ?? "";
 }
 
-function FriendRow({
-  actionLabel,
-  friend,
-  secondaryActionLabel,
+function ActionButton({
+  label,
+  style,
 }: {
-  actionLabel: string;
-  friend: FriendRequestSummary;
-  secondaryActionLabel?: string;
+  label: string;
+  style: "primary" | "secondary";
 }) {
+  return (
+    <button
+      className={
+        style === "primary"
+          ? "rounded-md bg-zinc-950 px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-emerald-600"
+          : "rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-semibold text-zinc-700 transition hover:border-emerald-600 hover:text-emerald-600"
+      }
+      type="submit"
+    >
+      {label}
+    </button>
+  );
+}
+
+function FriendRow({ friend, primaryAction, secondaryAction }: FriendRowProps) {
   return (
     <li className="rounded-md border border-zinc-200 p-3">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <p className="font-semibold">{friend.profile.displayName}</p>
-          <p className="mt-1 text-sm text-zinc-500">
-            @{friend.profile.username} - {friend.updatedAt}
-          </p>
+        <Link
+          className="flex min-w-0 items-center gap-3 hover:text-amber-500"
+          href={`/profiles/${friend.profile.username}`}
+        >
+          <ProfileAvatar
+            avatarUrl={friend.profile.avatarUrl}
+            displayName={friend.profile.displayName}
+            size="xs"
+          />
+          <span className="min-w-0">
+            <span className="block truncate font-semibold">
+              {friend.profile.displayName}
+            </span>
+            <span className="mt-0.5 block truncate text-sm text-zinc-500">
+              @{friend.profile.username} - {friend.updatedAt}
+            </span>
+          </span>
+        </Link>
+
+        <div className="flex gap-2">
+          {primaryAction ? (
+            <form action={primaryAction.action}>
+              <input name="friendshipId" type="hidden" value={friend.id} />
+              <ActionButton
+                label={primaryAction.label}
+                style={primaryAction.style}
+              />
+            </form>
+          ) : null}
+          {secondaryAction ? (
+            <form action={secondaryAction.action}>
+              <input name="friendshipId" type="hidden" value={friend.id} />
+              <ActionButton label={secondaryAction.label} style="secondary" />
+            </form>
+          ) : null}
         </div>
-        <form action={deleteFriendshipAction}>
-          <input name="friendshipId" type="hidden" value={friend.id} />
-          <button
-            className="rounded-md border border-zinc-300 px-3 py-1 text-sm font-semibold text-zinc-700 hover:border-red-700 hover:text-red-700"
-            type="submit"
-          >
-            {secondaryActionLabel ?? actionLabel}
-          </button>
-        </form>
       </div>
     </li>
   );
@@ -76,17 +124,24 @@ export default async function FriendsPage({ searchParams }: FriendsPageProps) {
 
   return (
     <main className="min-h-screen bg-[#f7f4ee] text-zinc-950">
-      <div className="mx-auto w-full max-w-6xl px-6 py-6 sm:px-8 lg:px-10">
+      <div className="mx-auto w-full max-w-7xl px-6 py-6 sm:px-8 lg:px-10">
         <AppHeader />
 
         <section className="grid gap-8 py-10 lg:grid-cols-[0.8fr_1.2fr]">
           <div>
-            <p className="text-sm font-medium uppercase text-red-700">Friends</p>
+            <p className="text-sm font-medium uppercase text-emerald-600">Friends</p>
             <h2 className="mt-2 text-3xl font-semibold">Build your circle</h2>
             <p className="mt-4 max-w-xl leading-7 text-zinc-700">
-              Add friends by username. Once your friends have installed-game
-              lists, Grater can use those lists for the shared game picker.
+              Add friends by username to see their public reviews, compare
+              installed lists, and set up the game picker later.
             </p>
+            <ul className="mt-5 list-disc space-y-2 pl-5 text-sm leading-6 text-zinc-700">
+              <li>Friend-visible reviews show in your timeline.</li>
+              <li>Comment on friends&apos; reviews.</li>
+              <li>Private lists stay hidden from everyone else.</li>
+              <li>Installed games can be compared by platform.</li>
+              <li>Shared picks can come next once lists are filled in.</li>
+            </ul>
 
             {!friendsData.currentProfile ? (
               <Link
@@ -113,9 +168,12 @@ export default async function FriendsPage({ searchParams }: FriendsPageProps) {
 
             {friendsData.currentProfile ? (
               <section className="rounded-lg border border-zinc-300 bg-white p-5 shadow-sm">
-                <p className="text-sm font-medium uppercase text-red-700">
+                <p className="text-sm font-medium uppercase text-emerald-600">
                   Add friend
                 </p>
+                <h3 className="mt-1 text-xl font-semibold">
+                  Search by username
+                </h3>
                 <form
                   action={sendFriendRequestAction}
                   className="mt-4 flex flex-col gap-3 sm:flex-row"
@@ -124,7 +182,7 @@ export default async function FriendsPage({ searchParams }: FriendsPageProps) {
                     Username
                   </label>
                   <input
-                    className="min-h-11 flex-1 rounded-lg border border-zinc-300 bg-white px-4 text-base outline-none ring-red-700/20 placeholder:text-zinc-400 focus:border-red-700 focus:ring-4"
+                    className="min-h-11 flex-1 rounded-lg border border-zinc-300 bg-white px-4 text-base outline-none ring-emerald-600/20 placeholder:text-zinc-400 focus:border-emerald-600 focus:ring-4"
                     id="username"
                     name="username"
                     placeholder="friend-username"
@@ -147,7 +205,7 @@ export default async function FriendsPage({ searchParams }: FriendsPageProps) {
         {friendsData.currentProfile ? (
           <section className="grid gap-5 pb-10 lg:grid-cols-3">
             <section className="rounded-lg border border-zinc-300 bg-white p-5 shadow-sm">
-              <p className="text-sm font-medium uppercase text-red-700">
+              <p className="text-sm font-medium uppercase text-emerald-600">
                 Friends
               </p>
               <h3 className="mt-1 text-xl font-semibold">
@@ -156,9 +214,13 @@ export default async function FriendsPage({ searchParams }: FriendsPageProps) {
               <ul className="mt-5 space-y-3">
                 {friendsData.friends.map((friend) => (
                   <FriendRow
-                    actionLabel="Remove"
                     friend={friend}
                     key={friend.id}
+                    primaryAction={{
+                      action: deleteFriendshipAction,
+                      label: "Remove",
+                      style: "secondary",
+                    }}
                   />
                 ))}
               </ul>
@@ -168,7 +230,7 @@ export default async function FriendsPage({ searchParams }: FriendsPageProps) {
             </section>
 
             <section className="rounded-lg border border-zinc-300 bg-white p-5 shadow-sm">
-              <p className="text-sm font-medium uppercase text-red-700">
+              <p className="text-sm font-medium uppercase text-emerald-600">
                 Incoming
               </p>
               <h3 className="mt-1 text-xl font-semibold">
@@ -176,34 +238,19 @@ export default async function FriendsPage({ searchParams }: FriendsPageProps) {
               </h3>
               <ul className="mt-5 space-y-3">
                 {friendsData.incomingRequests.map((friend) => (
-                  <li className="rounded-md border border-zinc-200 p-3" key={friend.id}>
-                    <div>
-                      <p className="font-semibold">{friend.profile.displayName}</p>
-                      <p className="mt-1 text-sm text-zinc-500">
-                        @{friend.profile.username} - {friend.updatedAt}
-                      </p>
-                    </div>
-                    <div className="mt-3 flex gap-2">
-                      <form action={acceptFriendRequestAction}>
-                        <input name="friendshipId" type="hidden" value={friend.id} />
-                        <button
-                          className="rounded-md bg-zinc-950 px-3 py-1 text-sm font-semibold text-white hover:bg-red-700"
-                          type="submit"
-                        >
-                          Accept
-                        </button>
-                      </form>
-                      <form action={deleteFriendshipAction}>
-                        <input name="friendshipId" type="hidden" value={friend.id} />
-                        <button
-                          className="rounded-md border border-zinc-300 px-3 py-1 text-sm font-semibold text-zinc-700 hover:border-red-700 hover:text-red-700"
-                          type="submit"
-                        >
-                          Decline
-                        </button>
-                      </form>
-                    </div>
-                  </li>
+                  <FriendRow
+                    friend={friend}
+                    key={friend.id}
+                    primaryAction={{
+                      action: acceptFriendRequestAction,
+                      label: "Accept",
+                      style: "primary",
+                    }}
+                    secondaryAction={{
+                      action: deleteFriendshipAction,
+                      label: "Decline",
+                    }}
+                  />
                 ))}
               </ul>
               {friendsData.incomingRequests.length === 0 ? (
@@ -212,7 +259,7 @@ export default async function FriendsPage({ searchParams }: FriendsPageProps) {
             </section>
 
             <section className="rounded-lg border border-zinc-300 bg-white p-5 shadow-sm">
-              <p className="text-sm font-medium uppercase text-red-700">
+              <p className="text-sm font-medium uppercase text-emerald-600">
                 Outgoing
               </p>
               <h3 className="mt-1 text-xl font-semibold">
@@ -221,9 +268,13 @@ export default async function FriendsPage({ searchParams }: FriendsPageProps) {
               <ul className="mt-5 space-y-3">
                 {friendsData.outgoingRequests.map((friend) => (
                   <FriendRow
-                    actionLabel="Cancel"
                     friend={friend}
                     key={friend.id}
+                    primaryAction={{
+                      action: deleteFriendshipAction,
+                      label: "Cancel",
+                      style: "secondary",
+                    }}
                   />
                 ))}
               </ul>

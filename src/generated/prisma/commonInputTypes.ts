@@ -270,6 +270,23 @@ export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedFloatNullableFilter<$PrismaModel>
 }
 
+export type EnumReviewVoteValueFilter<$PrismaModel = never> = {
+  equals?: $Enums.ReviewVoteValue | Prisma.EnumReviewVoteValueFieldRefInput<$PrismaModel>
+  in?: $Enums.ReviewVoteValue[] | Prisma.ListEnumReviewVoteValueFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ReviewVoteValue[] | Prisma.ListEnumReviewVoteValueFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumReviewVoteValueFilter<$PrismaModel> | $Enums.ReviewVoteValue
+}
+
+export type EnumReviewVoteValueWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ReviewVoteValue | Prisma.EnumReviewVoteValueFieldRefInput<$PrismaModel>
+  in?: $Enums.ReviewVoteValue[] | Prisma.ListEnumReviewVoteValueFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ReviewVoteValue[] | Prisma.ListEnumReviewVoteValueFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumReviewVoteValueWithAggregatesFilter<$PrismaModel> | $Enums.ReviewVoteValue
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumReviewVoteValueFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumReviewVoteValueFilter<$PrismaModel>
+}
+
 export type BoolFilter<$PrismaModel = never> = {
   equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
   not?: Prisma.NestedBoolFilter<$PrismaModel> | boolean
@@ -569,6 +586,23 @@ export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
   _sum?: Prisma.NestedFloatNullableFilter<$PrismaModel>
   _min?: Prisma.NestedFloatNullableFilter<$PrismaModel>
   _max?: Prisma.NestedFloatNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumReviewVoteValueFilter<$PrismaModel = never> = {
+  equals?: $Enums.ReviewVoteValue | Prisma.EnumReviewVoteValueFieldRefInput<$PrismaModel>
+  in?: $Enums.ReviewVoteValue[] | Prisma.ListEnumReviewVoteValueFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ReviewVoteValue[] | Prisma.ListEnumReviewVoteValueFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumReviewVoteValueFilter<$PrismaModel> | $Enums.ReviewVoteValue
+}
+
+export type NestedEnumReviewVoteValueWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ReviewVoteValue | Prisma.EnumReviewVoteValueFieldRefInput<$PrismaModel>
+  in?: $Enums.ReviewVoteValue[] | Prisma.ListEnumReviewVoteValueFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ReviewVoteValue[] | Prisma.ListEnumReviewVoteValueFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumReviewVoteValueWithAggregatesFilter<$PrismaModel> | $Enums.ReviewVoteValue
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumReviewVoteValueFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumReviewVoteValueFilter<$PrismaModel>
 }
 
 export type NestedBoolFilter<$PrismaModel = never> = {
