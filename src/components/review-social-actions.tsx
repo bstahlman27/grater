@@ -182,7 +182,7 @@ function VoteButton({
         isActive
           ? "border-emerald-300 bg-emerald-50 text-emerald-700"
           : "border-zinc-200 bg-zinc-50 text-zinc-500 hover:border-amber-300 hover:text-amber-500"
-      }`}
+      } ${action ? "cursor-pointer" : "cursor-default"}`}
       disabled={!action}
       type="submit"
     >

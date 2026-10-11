@@ -12,13 +12,14 @@ import {
   updateReviewComment,
 } from "@/data/grater";
 
-const maxAvatarSize = 750 * 1024;
+const maxAvatarSize = 2 * 1024 * 1024;
 const allowedAvatarTypes = new Set([
   "image/gif",
   "image/jpeg",
   "image/png",
   "image/webp",
 ]);
+const avatarDataUrlPattern = /^data:(image\/(?:gif|jpeg|png|webp));base64,([a-zA-Z0-9+/=]+)$/;
 
 function getTrimmedString(formData: FormData, name: string) {
   const value = formData.get(name);
@@ -33,6 +34,29 @@ async function getAvatarDataUrl(formData: FormData) {
     return null;
   }
 
+  const avatarDataUrl = formData.get("avatarDataUrl");
+
+  if (typeof avatarDataUrl === "string" && avatarDataUrl.trim()) {
+    const match = avatarDataUrl.match(avatarDataUrlPattern);
+
+    if (!match) {
+      throw new Error("Profile picture could not be read.");
+    }
+
+    const [, mimeType, encodedImage] = match;
+    const buffer = Buffer.from(encodedImage, "base64");
+
+    if (!allowedAvatarTypes.has(mimeType)) {
+      throw new Error("Profile picture must be a PNG, JPG, GIF, or WebP image.");
+    }
+
+    if (buffer.length > maxAvatarSize) {
+      throw new Error("Profile picture must be 2 MB or smaller.");
+    }
+
+    return `data:${mimeType};base64,${buffer.toString("base64")}`;
+  }
+
   const avatarFile = formData.get("avatarFile");
 
   if (!(avatarFile instanceof File) || avatarFile.size === 0) {
@@ -44,7 +68,7 @@ async function getAvatarDataUrl(formData: FormData) {
   }
 
   if (avatarFile.size > maxAvatarSize) {
-    throw new Error("Profile picture must be 750 KB or smaller.");
+    throw new Error("Profile picture must be 2 MB or smaller.");
   }
 
   const buffer = Buffer.from(await avatarFile.arrayBuffer());

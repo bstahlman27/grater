@@ -1,4 +1,5 @@
 import { AppHeader } from "@/components/app-header";
+import { AvatarUploadInput } from "@/components/avatar-upload-input";
 import { ListPanel } from "@/components/list-panel";
 import { ProfileAvatar } from "@/components/profile-avatar";
 import { ReviewCard } from "@/components/review-card";
@@ -117,23 +118,10 @@ export default async function ProfilePage() {
                     </div>
 
                     <div>
-                      <label
-                        className="block text-sm font-medium text-zinc-700"
-                        htmlFor="avatarFile"
-                      >
-                        Profile picture
-                      </label>
-                      <input
-                        accept="image/gif,image/jpeg,image/png,image/webp"
-                        className="mt-2 block w-full rounded-md border border-zinc-300 bg-white text-sm text-zinc-700 file:mr-3 file:min-h-11 file:border-0 file:bg-zinc-950 file:px-4 file:text-sm file:font-semibold file:text-white hover:file:bg-emerald-600"
-                        id="avatarFile"
-                        name="avatarFile"
-                        type="file"
+                      <AvatarUploadInput
+                        currentAvatarUrl={profile.avatarUrl}
+                        displayName={displayName}
                       />
-                      <p className="mt-2 text-xs leading-5 text-zinc-500">
-                        PNG, JPG, GIF, or WebP. Leave blank to keep your current
-                        picture.
-                      </p>
                       {profile.avatarUrl ? (
                         <label className="mt-3 flex items-center gap-2 text-sm text-zinc-700">
                           <input
