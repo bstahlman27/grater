@@ -51,8 +51,8 @@ function ActionButton({
     <button
       className={
         style === "primary"
-          ? "rounded-md bg-zinc-950 px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-emerald-600"
-          : "rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-semibold text-zinc-700 transition hover:border-emerald-600 hover:text-emerald-600"
+          ? "cursor-pointer rounded-md bg-zinc-950 px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-emerald-600"
+          : "cursor-pointer rounded-md border border-zinc-300 px-3 py-1.5 text-sm font-semibold text-zinc-700 transition hover:border-emerald-600 hover:text-emerald-600"
       }
       type="submit"
     >
@@ -64,7 +64,7 @@ function ActionButton({
 function FriendRow({ friend, primaryAction, secondaryAction }: FriendRowProps) {
   return (
     <li className="rounded-md border border-zinc-200 p-3">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="flex h-full flex-col justify-between gap-4">
         <Link
           className="flex min-w-0 items-center gap-3 hover:text-amber-500"
           href={`/profiles/${friend.profile.username}`}
@@ -84,7 +84,7 @@ function FriendRow({ friend, primaryAction, secondaryAction }: FriendRowProps) {
           </span>
         </Link>
 
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {primaryAction ? (
             <form action={primaryAction.action}>
               <input name="friendshipId" type="hidden" value={friend.id} />
@@ -127,20 +127,27 @@ export default async function FriendsPage({ searchParams }: FriendsPageProps) {
       <div className="mx-auto w-full max-w-7xl px-6 py-6 sm:px-8 lg:px-10">
         <AppHeader />
 
-        <section className="grid gap-8 py-10 lg:grid-cols-[0.8fr_1.2fr]">
-          <div>
-            <p className="text-sm font-medium uppercase text-emerald-600">Friends</p>
+        <section className="grid gap-8 py-10 lg:grid-cols-[minmax(0,1fr)_38rem] lg:items-start">
+          <section>
+            <p className="text-sm font-medium uppercase text-emerald-600">
+              Friends
+            </p>
             <h2 className="mt-2 text-3xl font-semibold">Build your circle</h2>
             <p className="mt-4 max-w-xl leading-7 text-zinc-700">
               Add friends by username to see their public reviews, compare
               installed lists, and set up the game picker later.
             </p>
             <ul className="mt-5 list-disc space-y-2 pl-5 text-sm leading-6 text-zinc-700">
-              <li>Friend-visible reviews show in your timeline.</li>
-              <li>Comment on friends&apos; reviews.</li>
-              <li>Private lists stay hidden from everyone else.</li>
-              <li>Installed games can be compared by platform.</li>
-              <li>Shared picks can come next once lists are filled in.</li>
+                <li>
+                  View friends profiles, including friend-visible reviews and lists
+                </li>
+                <li>See friend-visible reviews on your timeline</li>
+                <li>Like, dislike, and comment on them</li>
+                <li>See installed/play later lists visible to friends</li>
+                <li>
+                  Use the group game picker, which selects from a pool of games
+                  everyone has installed
+                </li>
             </ul>
 
             {!friendsData.currentProfile ? (
@@ -151,7 +158,7 @@ export default async function FriendsPage({ searchParams }: FriendsPageProps) {
                 Log in
               </Link>
             ) : null}
-          </div>
+          </section>
 
           <div className="space-y-5">
             {errorMessage ? (
@@ -199,11 +206,75 @@ export default async function FriendsPage({ searchParams }: FriendsPageProps) {
                 </p>
               </section>
             ) : null}
+
+            {friendsData.currentProfile ? (
+              <section className="grid items-start gap-5 sm:grid-cols-2">
+                <section className="rounded-lg border border-zinc-300 bg-white p-5 shadow-sm">
+                  <p className="text-sm font-medium uppercase text-emerald-600">
+                    Incoming
+                  </p>
+                  <h3 className="mt-1 text-xl font-semibold">
+                    {friendsData.incomingRequests.length} requests
+                  </h3>
+                  {friendsData.incomingRequests.length > 0 ? (
+                    <ul className="mt-5 grid gap-3">
+                      {friendsData.incomingRequests.map((friend) => (
+                        <FriendRow
+                          friend={friend}
+                          key={friend.id}
+                          primaryAction={{
+                            action: acceptFriendRequestAction,
+                            label: "Accept",
+                            style: "primary",
+                          }}
+                          secondaryAction={{
+                            action: deleteFriendshipAction,
+                            label: "Decline",
+                          }}
+                        />
+                      ))}
+                    </ul>
+                  ) : (
+                    <div className="mt-3">
+                      <EmptyState>No incoming requests.</EmptyState>
+                    </div>
+                  )}
+                </section>
+
+                <section className="rounded-lg border border-zinc-300 bg-white p-5 shadow-sm">
+                  <p className="text-sm font-medium uppercase text-emerald-600">
+                    Outgoing
+                  </p>
+                  <h3 className="mt-1 text-xl font-semibold">
+                    {friendsData.outgoingRequests.length} pending
+                  </h3>
+                  {friendsData.outgoingRequests.length > 0 ? (
+                    <ul className="mt-5 grid gap-3">
+                      {friendsData.outgoingRequests.map((friend) => (
+                        <FriendRow
+                          friend={friend}
+                          key={friend.id}
+                          primaryAction={{
+                            action: deleteFriendshipAction,
+                            label: "Cancel",
+                            style: "secondary",
+                          }}
+                        />
+                      ))}
+                    </ul>
+                  ) : (
+                    <div className="mt-3">
+                      <EmptyState>No outgoing requests.</EmptyState>
+                    </div>
+                  )}
+                </section>
+              </section>
+            ) : null}
           </div>
         </section>
 
         {friendsData.currentProfile ? (
-          <section className="grid gap-5 pb-10 lg:grid-cols-3">
+          <section className="pb-10">
             <section className="rounded-lg border border-zinc-300 bg-white p-5 shadow-sm">
               <p className="text-sm font-medium uppercase text-emerald-600">
                 Friends
@@ -211,7 +282,7 @@ export default async function FriendsPage({ searchParams }: FriendsPageProps) {
               <h3 className="mt-1 text-xl font-semibold">
                 {friendsData.friends.length} accepted
               </h3>
-              <ul className="mt-5 space-y-3">
+              <ul className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
                 {friendsData.friends.map((friend) => (
                   <FriendRow
                     friend={friend}
@@ -225,61 +296,9 @@ export default async function FriendsPage({ searchParams }: FriendsPageProps) {
                 ))}
               </ul>
               {friendsData.friends.length === 0 ? (
-                <EmptyState>No friends yet.</EmptyState>
-              ) : null}
-            </section>
-
-            <section className="rounded-lg border border-zinc-300 bg-white p-5 shadow-sm">
-              <p className="text-sm font-medium uppercase text-emerald-600">
-                Incoming
-              </p>
-              <h3 className="mt-1 text-xl font-semibold">
-                {friendsData.incomingRequests.length} requests
-              </h3>
-              <ul className="mt-5 space-y-3">
-                {friendsData.incomingRequests.map((friend) => (
-                  <FriendRow
-                    friend={friend}
-                    key={friend.id}
-                    primaryAction={{
-                      action: acceptFriendRequestAction,
-                      label: "Accept",
-                      style: "primary",
-                    }}
-                    secondaryAction={{
-                      action: deleteFriendshipAction,
-                      label: "Decline",
-                    }}
-                  />
-                ))}
-              </ul>
-              {friendsData.incomingRequests.length === 0 ? (
-                <EmptyState>No incoming requests.</EmptyState>
-              ) : null}
-            </section>
-
-            <section className="rounded-lg border border-zinc-300 bg-white p-5 shadow-sm">
-              <p className="text-sm font-medium uppercase text-emerald-600">
-                Outgoing
-              </p>
-              <h3 className="mt-1 text-xl font-semibold">
-                {friendsData.outgoingRequests.length} pending
-              </h3>
-              <ul className="mt-5 space-y-3">
-                {friendsData.outgoingRequests.map((friend) => (
-                  <FriendRow
-                    friend={friend}
-                    key={friend.id}
-                    primaryAction={{
-                      action: deleteFriendshipAction,
-                      label: "Cancel",
-                      style: "secondary",
-                    }}
-                  />
-                ))}
-              </ul>
-              {friendsData.outgoingRequests.length === 0 ? (
-                <EmptyState>No outgoing requests.</EmptyState>
+                <div className="mt-5">
+                  <EmptyState>No friends yet.</EmptyState>
+                </div>
               ) : null}
             </section>
           </section>

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useOptimistic, useState, useTransition } from "react";
 import { ConfirmSubmitButton } from "@/components/confirm-submit-button";
 import { ProfileAvatar } from "@/components/profile-avatar";
 import type { ReviewCommentSummary, ReviewSummary } from "@/types/game";
@@ -24,6 +24,31 @@ type ReviewSocialActionsProps = {
 };
 
 const defaultVisibleCommentCount = 3;
+
+type VoteValue = "like" | "dislike";
+
+type VoteState = {
+  dislikeCount: number;
+  likeCount: number;
+  viewerVote: VoteValue | null;
+};
+
+function applyOptimisticVote(state: VoteState, value: VoteValue): VoteState {
+  const isRemovingVote = state.viewerVote === value;
+  const isSwitchingVote = state.viewerVote && state.viewerVote !== value;
+
+  return {
+    likeCount:
+      value === "like"
+        ? state.likeCount + (isRemovingVote ? -1 : 1)
+        : state.likeCount - (isSwitchingVote ? 1 : 0),
+    dislikeCount:
+      value === "dislike"
+        ? state.dislikeCount + (isRemovingVote ? -1 : 1)
+        : state.dislikeCount - (isSwitchingVote ? 1 : 0),
+    viewerVote: isRemovingVote ? null : value,
+  };
+}
 
 function ThumbIcon({ direction }: { direction: "up" | "down" }) {
   return (
@@ -160,21 +185,19 @@ function EditCommentForm({
 }
 
 function VoteButton({
-  action,
   count,
   isActive,
   label,
-  reviewId,
+  onVote,
   value,
 }: {
-  action?: (formData: FormData) => void | Promise<void>;
   count: number;
   isActive: boolean;
   label: string;
-  reviewId: string;
-  value: "like" | "dislike";
+  onVote?: (value: VoteValue) => void;
+  value: VoteValue;
 }) {
-  const button = (
+  return (
     <button
       aria-label={label}
       aria-pressed={isActive}
@@ -182,25 +205,14 @@ function VoteButton({
         isActive
           ? "border-emerald-300 bg-emerald-50 text-emerald-700"
           : "border-zinc-200 bg-zinc-50 text-zinc-500 hover:border-amber-300 hover:text-amber-500"
-      } ${action ? "cursor-pointer" : "cursor-default"}`}
-      disabled={!action}
-      type="submit"
+      } ${onVote ? "cursor-pointer" : "cursor-default"}`}
+      disabled={!onVote}
+      onClick={() => onVote?.(value)}
+      type="button"
     >
       <ThumbIcon direction={value === "like" ? "up" : "down"} />
       <span>{count}</span>
     </button>
-  );
-
-  if (!action) {
-    return button;
-  }
-
-  return (
-    <form action={action}>
-      <input name="reviewId" type="hidden" value={reviewId} />
-      <input name="voteValue" type="hidden" value={value} />
-      {button}
-    </form>
   );
 }
 
@@ -246,8 +258,18 @@ export function ReviewSocialActions({
   const [isCommenting, setIsCommenting] = useState(false);
   const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
   const [isShowingAllComments, setIsShowingAllComments] = useState(false);
+  const [optimisticVoteState, addOptimisticVote] = useOptimistic(
+    {
+      dislikeCount: review.dislikeCount,
+      likeCount: review.likeCount,
+      viewerVote: review.viewerVote,
+    },
+    applyOptimisticVote,
+  );
+  const [, startVoteTransition] = useTransition();
   const canShowComments = comments.length > 0 || isCommenting;
   const canComment = Boolean(commentAction && review.canComment);
+  const canVote = Boolean(voteAction && review.canVote);
   const hiddenCommentCount = Math.max(
     comments.length - defaultVisibleCommentCount,
     0,
@@ -260,24 +282,37 @@ export function ReviewSocialActions({
     return null;
   }
 
+  function handleVote(value: VoteValue) {
+    if (!voteAction || !review.canVote) {
+      return;
+    }
+
+    const formData = new FormData();
+    formData.set("reviewId", review.id);
+    formData.set("voteValue", value);
+
+    startVoteTransition(async () => {
+      addOptimisticVote(value);
+      await voteAction(formData);
+    });
+  }
+
   return (
     <>
       <div className="mt-4 flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <VoteButton
-            action={review.canVote ? voteAction : undefined}
-            count={review.likeCount}
-            isActive={review.viewerVote === "like"}
+            count={optimisticVoteState.likeCount}
+            isActive={optimisticVoteState.viewerVote === "like"}
             label="Like review"
-            reviewId={review.id}
+            onVote={canVote ? handleVote : undefined}
             value="like"
           />
           <VoteButton
-            action={review.canVote ? voteAction : undefined}
-            count={review.dislikeCount}
-            isActive={review.viewerVote === "dislike"}
+            count={optimisticVoteState.dislikeCount}
+            isActive={optimisticVoteState.viewerVote === "dislike"}
             label="Dislike review"
-            reviewId={review.id}
+            onVote={canVote ? handleVote : undefined}
             value="dislike"
           />
         </div>

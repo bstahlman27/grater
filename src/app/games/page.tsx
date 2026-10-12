@@ -162,7 +162,7 @@ export default async function GamesPage({ searchParams }: GamesPageProps) {
 
         <section className="py-10">
           <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_32rem] lg:items-start">
-            <div className="flex h-full flex-col">
+            <div className="flex flex-col">
               <div className="flex flex-col gap-2">
                 <p className="text-sm font-medium uppercase text-emerald-600">
                   Games
@@ -175,7 +175,7 @@ export default async function GamesPage({ searchParams }: GamesPageProps) {
               </div>
 
               <form
-                className="mt-auto flex max-w-2xl flex-col gap-3 pt-10 sm:flex-row"
+                className="mt-5 flex max-w-2xl flex-col gap-3 sm:flex-row"
                 method="get"
               >
                 <label className="sr-only" htmlFor="game-search">
@@ -196,6 +196,18 @@ export default async function GamesPage({ searchParams }: GamesPageProps) {
                   Search
                 </button>
               </form>
+
+              <div className="mt-4 flex max-w-2xl flex-col gap-3 rounded-lg border border-zinc-300 bg-white p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+                <p className="text-sm font-medium text-zinc-700">
+                  Can&apos;t decide what to play? Try Grater&apos;s game picker.
+                </p>
+                <Link
+                  className="w-fit rounded-lg border border-zinc-950 px-4 py-2 text-sm font-semibold text-zinc-950 transition hover:border-amber-500 hover:text-amber-500"
+                  href="/picker"
+                >
+                  Game picker
+                </Link>
+              </div>
             </div>
 
             <section>

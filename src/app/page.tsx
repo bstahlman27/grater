@@ -48,6 +48,12 @@ export default async function Home() {
                 >
                   Browse games
                 </Link>
+                <Link
+                  className="rounded-lg border border-zinc-950 px-4 py-2 text-sm font-semibold text-zinc-950 transition hover:border-emerald-600 hover:text-emerald-600"
+                  href="/picker"
+                >
+                  Game picker
+                </Link>
               </div>
             </section>
 
@@ -176,13 +182,19 @@ export default async function Home() {
 
             <section className="rounded-lg border border-zinc-900 bg-zinc-950 p-5 text-white shadow-sm">
               <p className="text-sm font-medium uppercase text-amber-300">
-                Later feature
+                Game picker
               </p>
-              <h2 className="mt-1 text-xl font-semibold">Pick something shared</h2>
+              <h2 className="mt-1 text-xl font-semibold">Need a nudge?</h2>
               <p className="mt-3 leading-7 text-zinc-300">
-                Once friends are added, Grater can compare installed-game lists
-                and choose one game both people already have ready.
+                Let Grater choose from your installed games, or compare your
+                friends&apos; lists for something the whole group can play.
               </p>
+              <Link
+                className="mt-4 inline-flex rounded-md bg-white px-4 py-2 text-sm font-semibold text-zinc-950 transition hover:bg-amber-300"
+                href="/picker"
+              >
+                Game picker
+              </Link>
             </section>
           </aside>
         </section>

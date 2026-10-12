@@ -58,6 +58,19 @@ export type ListedGame = {
   platforms?: string[];
 };
 
+export type GamePickerParticipant = {
+  id: string;
+  username: string;
+  displayName: string;
+  avatarUrl: string | null;
+  games: ListedGame[];
+};
+
+export type GamePickerData = {
+  currentProfile: GamePickerParticipant | null;
+  friends: GamePickerParticipant[];
+};
+
 export type ProfileSummary = {
   username: string;
   displayName: string;

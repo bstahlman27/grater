@@ -15,6 +15,8 @@ import { getRawgGameDetails } from "@/lib/rawg";
 import type {
   GameDetail,
   GameListState,
+  GamePickerData,
+  GamePickerParticipant,
   GameSummary,
   HomeProfileSummary,
   ListedGame,
@@ -793,6 +795,103 @@ export async function getInstalledGames(): Promise<ListedGame[]> {
       platforms: parseInstalledPlatforms(item.platform),
     })),
   );
+}
+
+function toPickerParticipant(
+  profile: {
+    avatarUrl: string | null;
+    displayName: string | null;
+    id: string;
+    username: string;
+  },
+  games: ListedGame[],
+): GamePickerParticipant {
+  return {
+    id: profile.id,
+    username: profile.username,
+    displayName: profile.displayName ?? profile.username,
+    avatarUrl: profile.avatarUrl,
+    games: sortListedGamesByTitle(games),
+  };
+}
+
+export async function getGamePickerData(): Promise<GamePickerData> {
+  const profile = await getSignedInProfile();
+
+  if (!profile) {
+    return {
+      currentProfile: null,
+      friends: [],
+    };
+  }
+
+  const friendProfileIds = await getAcceptedFriendProfileIds(profile.id);
+  const [profiles, installedItems] = await Promise.all([
+    prisma.profile.findMany({
+      where: {
+        id: {
+          in: [profile.id, ...friendProfileIds],
+        },
+      },
+      select: {
+        avatarUrl: true,
+        displayName: true,
+        id: true,
+        username: true,
+      },
+    }),
+    prisma.installedGameItem.findMany({
+      where: {
+        OR: [
+          {
+            profileId: profile.id,
+          },
+          {
+            profileId: {
+              in: friendProfileIds,
+            },
+            visibility: Visibility.FRIENDS,
+          },
+        ],
+      },
+      include: {
+        game: true,
+      },
+    }),
+  ]);
+  const gamesByProfileId = new Map<string, ListedGame[]>();
+
+  for (const item of installedItems) {
+    const profileGames = gamesByProfileId.get(item.profileId) ?? [];
+
+    profileGames.push({
+      game: toGameSummary(item.game),
+      visibility: toVisibilityLabel(item.visibility),
+      platforms: parseInstalledPlatforms(item.platform),
+    });
+    gamesByProfileId.set(item.profileId, profileGames);
+  }
+
+  const currentProfileRecord =
+    profiles.find((profileRecord) => profileRecord.id === profile.id) ??
+    profile;
+  const friendParticipants = profiles
+    .filter((profileRecord) => friendProfileIds.includes(profileRecord.id))
+    .map((friendProfile) =>
+      toPickerParticipant(
+        friendProfile,
+        gamesByProfileId.get(friendProfile.id) ?? [],
+      ),
+    )
+    .sort((a, b) => a.displayName.localeCompare(b.displayName));
+
+  return {
+    currentProfile: toPickerParticipant(
+      currentProfileRecord,
+      gamesByProfileId.get(profile.id) ?? [],
+    ),
+    friends: friendParticipants,
+  };
 }
 
 export async function getCurrentProfile(): Promise<ProfileSummary | null> {
