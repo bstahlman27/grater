@@ -25,34 +25,51 @@ type PickerChoice = {
 };
 
 const anyPlatform = "Any";
-const platformOptions = [
-  anyPlatform,
-  ...[...installedPlatformOptions].sort((a, b) => a.localeCompare(b)),
-];
+const sortedPlatformOptions = [...installedPlatformOptions].sort((a, b) =>
+  a.localeCompare(b),
+);
+const platformOptions = [anyPlatform, ...sortedPlatformOptions];
 
-function gameMatchesPlatform(game: ListedGame, platform: string) {
+function platformsMatch(selectedPlatforms: string[], platforms?: string[]) {
   return (
-    platform === anyPlatform ||
-    game.platforms?.some(
-      (gamePlatform) =>
-        gamePlatform.toLowerCase() === platform.toLowerCase(),
+    selectedPlatforms.length === 0 ||
+    platforms?.some((gamePlatform) =>
+      selectedPlatforms.some(
+        (selectedPlatform) =>
+          gamePlatform.toLowerCase() === selectedPlatform.toLowerCase(),
+      ),
     )
+  );
+}
+
+function getMatchingPlatforms(
+  platforms: string[] | undefined,
+  selectedPlatforms: string[],
+) {
+  if (!platforms) {
+    return [];
+  }
+
+  if (selectedPlatforms.length === 0) {
+    return platforms;
+  }
+
+  return platforms.filter((gamePlatform) =>
+    selectedPlatforms.some(
+      (selectedPlatform) =>
+        gamePlatform.toLowerCase() === selectedPlatform.toLowerCase(),
+    ),
   );
 }
 
 function getParticipantGame(
   participant: GamePickerParticipant,
   slug: string,
-  platform: string,
+  selectedPlatforms: string[],
 ) {
   return participant.games.find(
     ({ game, platforms }) =>
-      game.slug === slug &&
-      (platform === anyPlatform ||
-        platforms?.some(
-          (gamePlatform) =>
-            gamePlatform.toLowerCase() === platform.toLowerCase(),
-        )),
+      game.slug === slug && platformsMatch(selectedPlatforms, platforms),
   );
 }
 
@@ -70,6 +87,34 @@ function getCommonPlatforms(games: ListedGame[]) {
     .filter((platform) =>
       platformSets.every((platforms) => platforms.includes(platform)),
     );
+}
+
+function getDisplayPlatforms(
+  participantGames: ListedGame[],
+  selectedPlatforms: string[],
+) {
+  const commonPlatforms = getCommonPlatforms(participantGames);
+  const selectedCommonPlatforms =
+    selectedPlatforms.length === 0
+      ? commonPlatforms
+      : commonPlatforms.filter((platform) =>
+          selectedPlatforms.some(
+            (selectedPlatform) =>
+              platform.toLowerCase() === selectedPlatform.toLowerCase(),
+          ),
+        );
+
+  if (selectedCommonPlatforms.length > 0) {
+    return selectedCommonPlatforms;
+  }
+
+  return [
+    ...new Set(
+      participantGames.flatMap(({ platforms }) =>
+        getMatchingPlatforms(platforms, selectedPlatforms),
+      ),
+    ),
+  ].sort((a, b) => a.localeCompare(b));
 }
 
 function getRandomChoice(choices: PickerChoice[]) {
@@ -141,7 +186,7 @@ function ChoiceCard({ choice }: { choice: PickerChoice }) {
 
 export function GamePicker({ currentProfile, friends }: GamePickerProps) {
   const [mode, setMode] = useState<PickerMode>("solo");
-  const [selectedPlatform, setSelectedPlatform] = useState(anyPlatform);
+  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [selectedFriendIds, setSelectedFriendIds] = useState<string[]>([]);
   const [choice, setChoice] = useState<PickerChoice | null>(null);
 
@@ -151,20 +196,17 @@ export function GamePicker({ currentProfile, friends }: GamePickerProps) {
   );
   const participants = [currentProfile, ...selectedFriends];
   const soloChoices = currentProfile.games
-    .filter((listedGame) => gameMatchesPlatform(listedGame, selectedPlatform))
+    .filter((listedGame) => platformsMatch(selectedPlatforms, listedGame.platforms))
     .map(({ game, platforms }) => ({
       game,
-      platforms:
-        selectedPlatform === anyPlatform
-          ? (platforms ?? [])
-          : [selectedPlatform],
+      platforms: getMatchingPlatforms(platforms, selectedPlatforms),
       participantCount: 1,
     }));
   const groupChoices =
     selectedFriends.length === 0
       ? []
       : currentProfile.games.flatMap((listedGame) => {
-          if (!gameMatchesPlatform(listedGame, selectedPlatform)) {
+          if (!platformsMatch(selectedPlatforms, listedGame.platforms)) {
             return [];
           }
 
@@ -172,7 +214,7 @@ export function GamePicker({ currentProfile, friends }: GamePickerProps) {
             const match = getParticipantGame(
               participant,
               listedGame.game.slug,
-              selectedPlatform,
+              selectedPlatforms,
             );
 
             return match ? [match] : [];
@@ -185,10 +227,7 @@ export function GamePicker({ currentProfile, friends }: GamePickerProps) {
           return [
             {
               game: listedGame.game,
-              platforms:
-                selectedPlatform === anyPlatform
-                  ? getCommonPlatforms(participantGames)
-                  : [selectedPlatform],
+              platforms: getDisplayPlatforms(participantGames, selectedPlatforms),
               participantCount: participants.length,
             },
           ];
@@ -210,6 +249,21 @@ export function GamePicker({ currentProfile, friends }: GamePickerProps) {
       currentFriendIds.includes(friendId)
         ? currentFriendIds.filter((currentFriendId) => currentFriendId !== friendId)
         : [...currentFriendIds, friendId],
+    );
+  }
+
+  function togglePlatform(platform: string) {
+    setChoice(null);
+
+    if (platform === anyPlatform) {
+      setSelectedPlatforms([]);
+      return;
+    }
+
+    setSelectedPlatforms((currentPlatforms) =>
+      currentPlatforms.includes(platform)
+        ? currentPlatforms.filter((currentPlatform) => currentPlatform !== platform)
+        : [...currentPlatforms, platform],
     );
   }
 
@@ -264,9 +318,9 @@ export function GamePicker({ currentProfile, friends }: GamePickerProps) {
               Platform
             </p>
             <h2 className="mt-1 text-xl font-semibold">
-              {selectedPlatform === anyPlatform
+              {selectedPlatforms.length === 0
                 ? "Any installed platform"
-                : selectedPlatform}
+                : selectedPlatforms.join(", ")}
             </h2>
           </div>
           <p className="text-sm text-zinc-600">
@@ -276,7 +330,10 @@ export function GamePicker({ currentProfile, friends }: GamePickerProps) {
         </div>
         <div className="mt-4 flex flex-wrap gap-2">
           {platformOptions.map((platform) => {
-            const isSelected = selectedPlatform === platform;
+            const isSelected =
+              platform === anyPlatform
+                ? selectedPlatforms.length === 0
+                : selectedPlatforms.includes(platform);
 
             return (
               <button
@@ -287,10 +344,7 @@ export function GamePicker({ currentProfile, friends }: GamePickerProps) {
                     : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
                 }`}
                 key={platform}
-                onClick={() => {
-                  setSelectedPlatform(platform);
-                  setChoice(null);
-                }}
+                onClick={() => togglePlatform(platform)}
                 type="button"
               >
                 {platform}
